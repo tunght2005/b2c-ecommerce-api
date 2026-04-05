@@ -1,44 +1,59 @@
-const db = require('../../database/db')
+const mongoose = require('mongoose')
+
+const addressSchema = new mongoose.Schema(
+  {
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    receiver_name: { type: String, required: true },
+    phone: { type: String, required: true },
+    province: { type: String, required: true },
+    district: { type: String, required: true },
+    ward: { type: String, required: true },
+    detail: { type: String, required: true },
+    latitude: { type: Number, default: null },
+    longitude: { type: Number, default: null },
+    is_default: { type: Boolean, default: false }
+  },
+  { timestamps: true }
+)
+
+const Address = mongoose.model('Address', addressSchema)
 
 const AddressModel = {
   findAllByUserId: async (userId) => {
-    const [rows] = await db.query('SELECT * FROM user_address WHERE user_id = ? ORDER BY is_default DESC', [userId])
-    return rows
+    return await Address.find({ user_id: userId }).sort({ is_default: -1 })
   },
 
   findById: async (id) => {
-    const [rows] = await db.query('SELECT * FROM user_address WHERE id = ? LIMIT 1', [id])
-    return rows[0] || null
+    return await Address.findById(id)
   },
 
   create: async ({ user_id, receiver_name, phone, province, district, ward, detail, latitude, longitude }) => {
-    const [result] = await db.query(
-      `INSERT INTO user_address (user_id, receiver_name, phone, province, district, ward, detail, latitude, longitude, is_default)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE)`,
-      [user_id, receiver_name, phone, province, district, ward, detail, latitude, longitude]
-    )
-    return result.insertId
+    const address = new Address({
+      user_id,
+      receiver_name,
+      phone,
+      province,
+      district,
+      ward,
+      detail,
+      latitude,
+      longitude
+    })
+    return await address.save()
   },
 
-  update: async (id, { receiver_name, phone, province, district, ward, detail, latitude, longitude }) => {
-    const [result] = await db.query(
-      `UPDATE user_address SET receiver_name=?, phone=?, province=?, district=?, ward=?, detail=?, latitude=?, longitude=?
-       WHERE id=?`,
-      [receiver_name, phone, province, district, ward, detail, latitude, longitude, id]
-    )
-    return result.affectedRows
+  update: async (id, data) => {
+    return await Address.findByIdAndUpdate(id, data, { new: true })
   },
 
   delete: async (id) => {
-    const [result] = await db.query('DELETE FROM user_address WHERE id = ?', [id])
-    return result.affectedRows
+    return await Address.findByIdAndDelete(id)
   },
 
-  // Bỏ default tất cả → set default 1 cái
   setDefault: async (userId, id) => {
-    await db.query('UPDATE user_address SET is_default = FALSE WHERE user_id = ?', [userId])
-    await db.query('UPDATE user_address SET is_default = TRUE WHERE id = ? AND user_id = ?', [id, userId])
+    await Address.updateMany({ user_id: userId }, { is_default: false })
+    await Address.findByIdAndUpdate(id, { is_default: true })
   }
 }
 
-module.exports = AddressModel
+module.exports = { AddressModel, Address }

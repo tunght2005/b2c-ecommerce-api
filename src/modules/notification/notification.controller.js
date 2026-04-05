@@ -6,16 +6,18 @@ const NotificationController = {
       const notifications = await NotificationService.getAll(req.user.id)
       res.json({ notifications })
     } catch (err) {
-      res.status(err.status || 500).json({ message: err.message || 'Lỗi server' })
+      const status = typeof err.status === 'number' ? err.status : 500
+      res.status(status).json({ message: err.message || 'Lỗi server' })
     }
   },
 
   markAsRead: async (req, res) => {
     try {
-      const notif = await NotificationService.markAsRead(req.user.id, parseInt(req.params.id))
+      const notif = await NotificationService.markAsRead(req.user.id, req.params.id)
       res.json({ message: 'Đã đánh dấu đã đọc', notification: notif })
     } catch (err) {
-      res.status(err.status || 500).json({ message: err.message || 'Lỗi server' })
+      const status = typeof err.status === 'number' ? err.status : 500
+      res.status(status).json({ message: err.message || 'Lỗi server' })
     }
   },
 
@@ -24,7 +26,8 @@ const NotificationController = {
       await NotificationService.markAllAsRead(req.user.id)
       res.json({ message: 'Đã đánh dấu tất cả đã đọc' })
     } catch (err) {
-      res.status(err.status || 500).json({ message: err.message || 'Lỗi server' })
+      const status = typeof err.status === 'number' ? err.status : 500
+      res.status(status).json({ message: err.message || 'Lỗi server' })
     }
   }
 }

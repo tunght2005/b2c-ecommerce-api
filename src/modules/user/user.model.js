@@ -1,27 +1,20 @@
-const db = require('../../database/db')
+const { User } = require('../auth/auth.model')
 
 const UserModel = {
   findById: async (id) => {
-    const [rows] = await db.query(
-      'SELECT id, username, email, phone, role, status, created_at FROM users WHERE id = ? LIMIT 1',
-      [id]
-    )
-    return rows[0] || null
+    return await User.findById(id).select('-password')
   },
 
   update: async (id, { username, phone }) => {
-    const [result] = await db.query('UPDATE users SET username = ?, phone = ? WHERE id = ?', [username, phone, id])
-    return result.affectedRows
+    return await User.findByIdAndUpdate(id, { username, phone }, { new: true }).select('-password')
   },
 
   updatePassword: async (id, hashedPassword) => {
-    const [result] = await db.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id])
-    return result.affectedRows
+    return await User.findByIdAndUpdate(id, { password: hashedPassword })
   },
 
   findPasswordById: async (id) => {
-    const [rows] = await db.query('SELECT password FROM users WHERE id = ? LIMIT 1', [id])
-    return rows[0] || null
+    return await User.findById(id).select('password')
   }
 }
 

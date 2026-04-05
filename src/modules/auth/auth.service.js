@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
-const AuthModel = require('./auth.model')
+const { AuthModel } = require('./auth.model')
 const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../../utils/jwt')
 
 const AuthService = {
@@ -9,8 +9,8 @@ const AuthService = {
       throw { status: 409, message: 'Email đã được sử dụng' }
     }
     const hashed = await bcrypt.hash(password, 10)
-    const userId = await AuthModel.create({ username, email, password: hashed, phone, role })
-    return { id: userId, username, email, role }
+    const user = await AuthModel.create({ username, email, password: hashed, phone, role })
+    return { id: user._id, username: user.username, email: user.email, role: user.role }
   },
 
   login: async ({ email, password }) => {
@@ -22,7 +22,7 @@ const AuthService = {
     if (!match) throw { status: 401, message: 'Email hoặc mật khẩu không đúng' }
 
     const payload = {
-      id: user.id,
+      id: user._id,
       username: user.username,
       email: user.email,
       phone: user.phone,
@@ -31,7 +31,7 @@ const AuthService = {
     }
 
     const accessToken = signAccessToken(payload)
-    const refreshToken = signRefreshToken({ id: user.id })
+    const refreshToken = signRefreshToken({ id: user._id })
 
     return { accessToken, refreshToken, user: payload }
   },
@@ -51,7 +51,7 @@ const AuthService = {
     if (user.status === 'inactive') throw { status: 403, message: 'Tài khoản đã bị khóa' }
 
     const payload = {
-      id: user.id,
+      id: user._id,
       username: user.username,
       email: user.email,
       phone: user.phone,
