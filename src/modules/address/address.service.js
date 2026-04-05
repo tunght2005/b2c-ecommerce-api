@@ -1,4 +1,4 @@
-const AddressModel = require('./address.model')
+const { AddressModel } = require('./address.model')
 
 const AddressService = {
   getAll: async (userId) => {
@@ -8,9 +8,11 @@ const AddressService = {
   create: async (userId, data) => {
     const { receiver_name, phone, province, district, ward, detail, latitude, longitude } = data
     if (!receiver_name || !phone || !province || !district || !ward || !detail) {
-      throw { status: 400, message: 'Thiếu thông tin bắt buộc' }
+      const err = new Error('Thiếu thông tin bắt buộc')
+      err.status = 400
+      throw err
     }
-    const id = await AddressModel.create({
+    return await AddressModel.create({
       user_id: userId,
       receiver_name,
       phone,
@@ -21,16 +23,23 @@ const AddressService = {
       latitude,
       longitude
     })
-    return await AddressModel.findById(id)
   },
 
   update: async (userId, id, data) => {
     const address = await AddressModel.findById(id)
-    if (!address) throw { status: 404, message: 'Địa chỉ không tồn tại' }
-    if (address.user_id !== userId) throw { status: 403, message: 'Không có quyền chỉnh sửa địa chỉ này' }
+    if (!address) {
+      const err = new Error('Địa chỉ không tồn tại')
+      err.status = 404
+      throw err
+    }
+    if (address.user_id.toString() !== userId.toString()) {
+      const err = new Error('Không có quyền chỉnh sửa')
+      err.status = 403
+      throw err
+    }
 
     const { receiver_name, phone, province, district, ward, detail, latitude, longitude } = data
-    await AddressModel.update(id, {
+    return await AddressModel.update(id, {
       receiver_name: receiver_name || address.receiver_name,
       phone: phone || address.phone,
       province: province || address.province,
@@ -40,20 +49,35 @@ const AddressService = {
       latitude: latitude ?? address.latitude,
       longitude: longitude ?? address.longitude
     })
-    return await AddressModel.findById(id)
   },
 
   delete: async (userId, id) => {
     const address = await AddressModel.findById(id)
-    if (!address) throw { status: 404, message: 'Địa chỉ không tồn tại' }
-    if (address.user_id !== userId) throw { status: 403, message: 'Không có quyền xóa địa chỉ này' }
+    if (!address) {
+      const err = new Error('Địa chỉ không tồn tại')
+      err.status = 404
+      throw err
+    }
+    if (address.user_id.toString() !== userId.toString()) {
+      const err = new Error('Không có quyền xóa')
+      err.status = 403
+      throw err
+    }
     await AddressModel.delete(id)
   },
 
   setDefault: async (userId, id) => {
     const address = await AddressModel.findById(id)
-    if (!address) throw { status: 404, message: 'Địa chỉ không tồn tại' }
-    if (address.user_id !== userId) throw { status: 403, message: 'Không có quyền' }
+    if (!address) {
+      const err = new Error('Địa chỉ không tồn tại')
+      err.status = 404
+      throw err
+    }
+    if (address.user_id.toString() !== userId.toString()) {
+      const err = new Error('Không có quyền')
+      err.status = 403
+      throw err
+    }
     await AddressModel.setDefault(userId, id)
     return await AddressModel.findById(id)
   }

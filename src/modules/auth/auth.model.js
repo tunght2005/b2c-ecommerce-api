@@ -1,24 +1,32 @@
-const db = require('../../database/db')
+const mongoose = require('mongoose')
+
+const userSchema = new mongoose.Schema(
+  {
+    username: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    phone: { type: String, default: null },
+    role: { type: String, enum: ['customer', 'admin', 'shipper', 'support'], default: 'customer' },
+    status: { type: String, enum: ['active', 'inactive'], default: 'active' }
+  },
+  { timestamps: true } // tự tạo createdAt, updatedAt
+)
+
+const User = mongoose.model('User', userSchema)
 
 const AuthModel = {
   findByEmail: async (email) => {
-    const [rows] = await db.query('SELECT * FROM users WHERE email = ? LIMIT 1', [email])
-    return rows[0] || null
+    return await User.findOne({ email })
   },
 
   findById: async (id) => {
-    const [rows] = await db.query('SELECT * FROM users WHERE id = ? LIMIT 1', [id])
-    return rows[0] || null
+    return await User.findById(id)
   },
 
   create: async ({ username, email, password, phone, role }) => {
-    const [result] = await db.query(
-      `INSERT INTO users (username, email, password, phone, role, status, created_at)
-       VALUES (?, ?, ?, ?, ?, 'active', NOW())`,
-      [username, email, password, phone, role]
-    )
-    return result.insertId
+    const user = new User({ username, email, password, phone, role })
+    return await user.save()
   }
 }
 
-module.exports = AuthModel
+module.exports = { AuthModel, User }

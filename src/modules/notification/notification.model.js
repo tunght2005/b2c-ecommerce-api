@@ -1,28 +1,33 @@
-const db = require('../../database/db')
+const mongoose = require('mongoose')
+
+const notificationSchema = new mongoose.Schema(
+  {
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    title: { type: String, required: true },
+    content: { type: String, default: null },
+    is_read: { type: Boolean, default: false }
+  },
+  { timestamps: true }
+)
+
+const Notification = mongoose.model('Notification', notificationSchema)
 
 const NotificationModel = {
   findAllByUserId: async (userId) => {
-    const [rows] = await db.query('SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC', [userId])
-    return rows
+    return await Notification.find({ user_id: userId }).sort({ createdAt: -1 })
   },
 
   findById: async (id) => {
-    const [rows] = await db.query('SELECT * FROM notifications WHERE id = ? LIMIT 1', [id])
-    return rows[0] || null
+    return await Notification.findById(id)
   },
 
   markAsRead: async (id, userId) => {
-    const [result] = await db.query('UPDATE notifications SET is_read = TRUE WHERE id = ? AND user_id = ?', [
-      id,
-      userId
-    ])
-    return result.affectedRows
+    return await Notification.findByIdAndUpdate(id, { is_read: true }, { new: true })
   },
 
   markAllAsRead: async (userId) => {
-    const [result] = await db.query('UPDATE notifications SET is_read = TRUE WHERE user_id = ?', [userId])
-    return result.affectedRows
+    return await Notification.updateMany({ user_id: userId }, { is_read: true })
   }
 }
 
-module.exports = NotificationModel
+module.exports = { NotificationModel, Notification }
