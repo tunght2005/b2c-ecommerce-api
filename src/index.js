@@ -7,9 +7,11 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+
 app.get('/', (req, res) => res.send('API running'))
 
 app.use('/api', require('./routes'))
+app.use('/uploads', express.static('uploads'));
 
 const PORT = 3000
 
