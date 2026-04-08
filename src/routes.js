@@ -15,5 +15,6 @@ router.use('/product-images', require('./modules/product-image/product-image.rou
 
 router.use('/cart', require('./modules/cart/cart.routes'));
 router.use('/order', require('./modules/order/order.routes'));
+router.use('/payment', require('./modules/payment/payment.routes'));
 
 module.exports = router
