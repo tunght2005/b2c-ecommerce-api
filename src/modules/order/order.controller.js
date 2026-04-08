@@ -40,6 +40,22 @@ const orderController = {
         } catch (error) {
             res.status(500).json({ success: false, message: error.message });
         }
+    },
+
+    // 3. API Xác nhận đơn hàng (admin)
+    confirmOrder: async (req, res) => {
+        try {
+            const order_id = req.params.id;
+            const order = await orderService.confirmOrder(order_id);
+
+            res.status(200).json({
+                success: true,
+                message: "Xác nhận đơn hàng thành công",
+                data: order
+            });
+        } catch (error) {
+            res.status(400).json({ success: false, message: error.message });
+        }
     }
 };
 

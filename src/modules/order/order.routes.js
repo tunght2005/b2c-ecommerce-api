@@ -10,4 +10,7 @@ router.post('/create', authMiddleware,requireRole('customer'), orderController.c
 // API Lấy lịch sử đơn hàng (FE gọi khi khách vào trang Quản lý đơn hàng)
 router.get('/', authMiddleware,requireRole('customer'), orderController.getUserOrders);
 
+// API Xác nhận đơn hàng (Admin)
+router.patch('/:id/confirm', authMiddleware, requireRole('admin'), orderController.confirmOrder);
+
 module.exports = router;

@@ -60,6 +60,23 @@ const orderService = {
             });
             // Nếu bạn đã có file address.model.js thì mở comment dòng dưới để nhúng địa chỉ
             // .populate('address_id'); 
+    },
+
+    // 3. Xác nhận đơn hàng (admin xác nhận trước khi gán shipper)
+    confirmOrder: async (order_id) => {
+        const order = await Order.findById(order_id)
+        if (!order) {
+            throw new Error('Order không tồn tại')
+        }
+
+        if (order.status !== 'pending') {
+            throw new Error(`Order đang ở trạng thái '${order.status}', không thể xác nhận`)
+        }
+
+        order.status = 'confirmed'
+        await order.save()
+
+        return order
     }
 };
 
