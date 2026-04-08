@@ -50,7 +50,6 @@ const paymentController = {
                 const responseCode = vnp_Params['vnp_ResponseCode'];
 
                 if (responseCode === '00') {
-                    // ✅ THANH TOÁN THÀNH CÔNG -> Cập nhật Database
                     await Payment.findOneAndUpdate(
                         { order_id: orderId }, 
                         { 
@@ -65,7 +64,7 @@ const paymentController = {
 
                     return res.send("Thanh toán thành công và đã cập nhật trạng thái 'paid' trong Database!");
                 } else {
-                    // ❌ THANH TOÁN THẤT BẠI
+                    // THANH TOÁN THẤT BẠI
                     await Payment.findOneAndUpdate({ order_id: orderId }, { status: 'failed' });
                     return res.send("Thanh toán thất bại hoặc khách đã hủy giao dịch.");
                 }
