@@ -7,6 +7,6 @@ const requireRole = require('../../middlewares/role.middleware');
 router.post('/create-vnpay', authMiddleware,requireRole('customer'),paymentController.createVNPAYPayment);
 
 // GET: http://localhost:PORT/api/payment/vnpay-return
-router.get('/vnpay-return',authMiddleware,requireRole('customer'),  paymentController.vnpayReturn);
+router.get('/vnpay-return', paymentController.vnpayReturn);
 
 module.exports = router;

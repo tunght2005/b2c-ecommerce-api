@@ -33,6 +33,14 @@ const orderSchema = new mongoose.Schema({
     
     total_price: { type: Number, required: true, default: 0 },
     discount_price: { type: Number, default: 0 },
+    
+    // ĐÃ ĐỔI TỪ PROMOTION SANG VOUCHER
+    voucher_id: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Voucher', 
+        default: null // Mặc định là null nếu khách không dùng mã
+    },
+
     final_price: { type: Number, required: true, default: 0 },
     
     status: {

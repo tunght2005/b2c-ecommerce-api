@@ -5,7 +5,9 @@ const orderController = {
     createOrder: async (req, res) => {
         try {
             const user_id = req.user.id; // Lấy từ token đăng nhập
-            const { address_id, discount_price } = req.body;
+            
+            // CHỈ NHẬN address_id VÀ voucher_id (Tuyệt đối không nhận discount_price từ Frontend nữa)
+            const { address_id, voucher_id } = req.body;
 
             // Kiểm tra xem FE có gửi address_id lên không
             if (!address_id) {
@@ -15,7 +17,8 @@ const orderController = {
                 });
             }
 
-            const order = await orderService.createOrder(user_id, address_id, discount_price);
+            // Gọi service tạo đơn (chỉ truyền user_id, address_id, voucher_id)
+            const order = await orderService.createOrder(user_id, address_id, voucher_id);
 
             res.status(201).json({
                 success: true,

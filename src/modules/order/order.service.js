@@ -1,10 +1,12 @@
 const Order = require('./order.model');
 const Cart = require('../cart/cart.model');
+const Voucher = require('../voucher/voucher.model'); 
+const voucherService = require('../voucher/voucher.service'); // NHÚNG THÊM ĐỂ TÍNH TIỀN
 
 const orderService = {
-    // 1. Tạo đơn hàng mới từ Giỏ hàng
-    createOrder: async (user_id, address_id, discount_price = 0) => {
-        // Lấy giỏ hàng và ÉP Mongoose lấy thông tin Variant (giống cách mình fix lỗi Cart lúc nãy)
+    // 1. Tạo đơn hàng mới từ Giỏ hàng (Đã bỏ tham số discount_price)
+    createOrder: async (user_id, address_id, voucher_id = null) => {
+        // Lấy giỏ hàng và ÉP Mongoose lấy thông tin Variant
         const cart = await Cart.findOne({ user_id }).populate({
             path: 'items.variant_id',
             model: 'Variant'
@@ -27,6 +29,19 @@ const orderService = {
             };
         });
 
+        // 🟢 BẮT ĐẦU TÍNH TOÁN TIỀN GIẢM GIÁ TẠI BACKEND
+        let discount_price = 0;
+        if (voucher_id) {
+            const voucher = await Voucher.findById(voucher_id);
+            if (!voucher) {
+                throw new Error("Mã giảm giá không tồn tại hoặc không hợp lệ.");
+            }
+            
+            // Tận dụng lại hàm calculateDiscount để check hạn sử dụng, lượt dùng, đơn tối thiểu...
+            const discountResult = await voucherService.calculateDiscount(voucher.code, total_price);
+            discount_price = discountResult.discount_amount;
+        }
+
         const final_price = total_price - discount_price;
 
         // Tạo Document Order mới
@@ -36,11 +51,19 @@ const orderService = {
             items: orderItems,
             total_price,
             discount_price,
+            voucher_id, 
             final_price
         });
 
         // Lưu đơn hàng vào database
         await newOrder.save();
+
+        // Tăng số lượt sử dụng voucher lên 1
+        if (voucher_id) {
+            await Voucher.findByIdAndUpdate(voucher_id, {
+                $inc: { used_count: 1 }
+            });
+        }
 
         // Đặt hàng thành công thì dọn sạch giỏ hàng
         cart.items = [];
@@ -56,10 +79,12 @@ const orderService = {
             .populate({
                 path: 'items.variant_id',
                 model: 'Variant',
-                select: 'sku' // Chỉ lấy mã SKU cho nhẹ (bạn có thể thêm name, image tùy ý)
+                select: 'sku' // Chỉ lấy mã SKU cho nhẹ
+            })
+            .populate({
+                path: 'voucher_id',
+                select: 'code discount_type discount_value' 
             });
-            // Nếu bạn đã có file address.model.js thì mở comment dòng dưới để nhúng địa chỉ
-            // .populate('address_id'); 
     }
 };
 
