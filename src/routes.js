@@ -13,7 +13,7 @@ router.use('/brands', require('./modules/brand/brand.routes'));
 router.use('/attribute-groups', require('./modules/attributeGroup/attributeGroup.routes'));
 router.use('/attributes', require('./modules/attribute/attribute.routes'));
 router.use('/product-images', require('./modules/product-image/product-image.routes'));
-
+router.use('/promotions', require('./modules/promotion/promotion.routes'));
 
 
 module.exports = router
