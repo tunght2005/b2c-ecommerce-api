@@ -12,7 +12,7 @@ router.use('/brands', require('./modules/brand/brand.routes'));
 router.use('/attribute-groups', require('./modules/attributeGroup/attributeGroup.routes'));
 router.use('/attributes', require('./modules/attribute/attribute.routes'));
 router.use('/product-images', require('./modules/product-image/product-image.routes'));
-
+router.use('/promotions', require('./modules/promotion/promotion.routes'));
 router.use('/cart', require('./modules/cart/cart.routes'));
 router.use('/order', require('./modules/order/order.routes'));
 router.use('/payment', require('./modules/payment/payment.routes'));
