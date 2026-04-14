@@ -1,13 +1,22 @@
+require('dotenv').config()
 const express = require('express')
+const connectDB = require('./database/db')
 
 const app = express()
 
-app.get('/', (req, res) => {
-  res.send('API running')
-})
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+
+app.get('/', (req, res) => res.send('API running'))
+
+app.use('/api', require('./routes'))
+app.use('/uploads', express.static('uploads'));
 
 const PORT = 3000
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`)
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`)
+  })
 })
