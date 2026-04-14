@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const { AuthModel } = require('./auth.model')
 const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../../utils/jwt')
+const DeliveryStaff = require('../shipment/deliveryStaff.model')
 
 const AuthService = {
   register: async ({ username, email, password, phone, role = 'customer' }) => {
@@ -10,6 +11,24 @@ const AuthService = {
     }
     const hashed = await bcrypt.hash(password, 10)
     const user = await AuthModel.create({ username, email, password: hashed, phone, role })
+
+    // Nếu role là shipper, tự động tạo DeliveryStaff
+    if (role === 'shipper') {
+      try {
+        await DeliveryStaff.create({
+          user_id: user._id,
+          name: username, // Sử dụng username làm name mặc định
+          phone: phone || null,
+          email: email,
+          status: 'active'
+        })
+      } catch (error) {
+        // Nếu tạo DeliveryStaff thất bại, rollback user
+        await AuthModel.findByIdAndDelete(user._id)
+        throw { status: 500, message: 'Lỗi tạo tài khoản shipper' }
+      }
+    }
+
     return { id: user._id, username: user.username, email: user.email, role: user.role }
   },
 

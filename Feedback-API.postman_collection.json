@@ -1,0 +1,315 @@
+{
+  "info": {
+    "name": "Feedback API Collection",
+    "description": "Postman collection for testing Feedback module APIs in B2C E-commerce API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "feedback_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "product_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "rating_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "User Feedback APIs",
+      "item": [
+        {
+          "name": "Create Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": \"{{product_id}}\",\n  \"title\": \"Sản phẩm giao sai\",\n  \"content\": \"Tôi nhận được sản phẩm khác với đơn hàng\",\n  \"priority\": \"high\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback",
+              "host": ["{{base_url}}"],
+              "path": ["feedback"]
+            },
+            "description": "Tạo feedback mới. Phải cung cấp order_id HOẶC product_id."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('feedback_id', response.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get My Feedbacks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/my",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "my"]
+            }
+          }
+        },
+        {
+          "name": "Get Feedback Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Reply to Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Cảm ơn bạn đã feedback, chúng tôi sẽ kiểm tra lại đơn hàng\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}/reply",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}", "reply"]
+            }
+          }
+        },
+        {
+          "name": "Get Feedback Replies",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}/replies",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}", "replies"]
+            }
+          }
+        },
+        {
+          "name": "Rate Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Rất hài lòng với cách xử lý\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}/rate",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}", "rate"]
+            },
+            "description": "Đánh giá feedback sau khi đã được giải quyết (status: resolved/closed). Nếu feedback liên quan đến đơn hàng, chỉ cho phép khi shipment status = 'delivered'."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('rating_id', response.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Rating",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 4,\n  \"comment\": \"Hài lòng nhưng có thể cải thiện\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/rating/{{rating_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "rating", "{{rating_id}}"]
+            },
+            "description": "Cập nhật đánh giá của mình (rating và comment)."
+          }
+        },
+        {
+          "name": "Delete Rating",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/rating/{{rating_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "rating", "{{rating_id}}"]
+            },
+            "description": "Xóa đánh giá của mình."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin/Support APIs",
+      "item": [
+        {
+          "name": "Get All Feedbacks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback?status=open&page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["feedback"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "open"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Feedback Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_progress\",\n  \"priority\": \"high\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
