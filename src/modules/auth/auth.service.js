@@ -45,6 +45,7 @@ const AuthService = {
       username: user.username,
       email: user.email,
       phone: user.phone,
+      avatar: user.avatar,
       role: user.role,
       status: user.status
     }
@@ -74,6 +75,7 @@ const AuthService = {
       username: user.username,
       email: user.email,
       phone: user.phone,
+      avatar: user.avatar,
       role: user.role,
       status: user.status
     }

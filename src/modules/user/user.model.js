@@ -5,8 +5,8 @@ const UserModel = {
     return await User.findById(id).select('-password')
   },
 
-  update: async (id, { username, phone }) => {
-    return await User.findByIdAndUpdate(id, { username, phone }, { new: true }).select('-password')
+  update: async (id, { username, phone, avatar }) => {
+    return await User.findByIdAndUpdate(id, { username, phone, avatar }, { new: true }).select('-password')
   },
 
   updatePassword: async (id, hashedPassword) => {

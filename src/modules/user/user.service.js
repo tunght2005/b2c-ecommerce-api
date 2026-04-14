@@ -8,8 +8,8 @@ const UserService = {
     return user
   },
 
-  updateProfile: async (id, { username, phone }) => {
-    if (!username && !phone) {
+  updateProfile: async (id, { username, phone, avatar }) => {
+    if (!username && !phone && !avatar) {
       throw { status: 400, message: 'Không có thông tin cần cập nhật' }
     }
 
@@ -19,7 +19,8 @@ const UserService = {
 
     await UserModel.update(id, {
       username: username || current.username,
-      phone: phone || current.phone
+      phone: phone || current.phone,
+      avatar: avatar || current.avatar
     })
 
     return await UserModel.findById(id)

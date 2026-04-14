@@ -12,8 +12,8 @@ const UserController = {
 
   updateProfile: async (req, res) => {
     try {
-      const { username, phone } = req.body
-      const user = await UserService.updateProfile(req.user.id, { username, phone })
+      const { username, phone, avatar } = req.body
+      const user = await UserService.updateProfile(req.user.id, { username, phone, avatar })
       res.json({ message: 'Cập nhật thành công', user })
     } catch (err) {
       res.status(err.status || 500).json({ message: err.message || 'Lỗi server' })

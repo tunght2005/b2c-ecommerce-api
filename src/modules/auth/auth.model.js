@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phone: { type: String, default: null },
+    avatar: { type: String, default: null },
     role: { type: String, enum: ['customer', 'admin', 'shipper', 'support'], default: 'customer' },
     status: { type: String, enum: ['active', 'inactive'], default: 'active' }
   },
@@ -23,8 +24,8 @@ const AuthModel = {
     return await User.findById(id)
   },
 
-  create: async ({ username, email, password, phone, role }) => {
-    const user = new User({ username, email, password, phone, role })
+  create: async ({ username, email, password, phone, avatar, role }) => {
+    const user = new User({ username, email, password, phone, avatar, role })
     return await user.save()
   }
 }
