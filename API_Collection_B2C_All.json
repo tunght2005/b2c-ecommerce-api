@@ -644,6 +644,40 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Update Cart Quantity",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"variant_id\": \"{{variant_id}}\",\n    \"quantity\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/cart/update",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["cart", "update"]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -702,6 +736,78 @@
               "raw": "{{base_url}}/order",
               "host": ["{{base_url}}"],
               "path": ["order"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[Admin] Confirm Order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/order/{{order_id}}/confirm",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["order", "{{order_id}}", "confirm"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[User] Cancel Order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/order/cancel/{{order_id}}",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["order", "cancel", "{{order_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[Admin] Delete Order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/order/{{order_id}}",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["order", "{{order_id}}"]
             }
           },
           "response": []
@@ -1424,6 +1530,53 @@
               "protocol": "http",
               "host": ["{{base_url}}"],
               "path": ["attributes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Attributes By Group",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/attributes/group/{{attribute_group_id}}",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["attributes", "group", "{{attribute_group_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Attribute",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"1TB\",\r\n  \"group_id\": \"{{attribute_group_id}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/attributes/{{attribute_id}}",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["attributes", "{{attribute_id}}"]
             }
           },
           "response": []
