@@ -59,6 +59,23 @@ const orderController = {
         } catch (error) {
             res.status(400).json({ success: false, message: error.message });
         }
+    },
+
+    cancelOrder: async (req, res) => {
+        try {
+            const user_id = req.user.id;
+            const order_id = req.params.id; // Lấy ID đơn hàng từ URL
+
+            const canceledOrder = await orderService.cancelOrder(order_id, user_id);
+
+            res.status(200).json({
+                success: true,
+                message: "Đã hủy đơn hàng thành công",
+                data: canceledOrder
+            });
+        } catch (error) {
+            res.status(400).json({ success: false, message: error.message });
+        }
     }
 };
 
