@@ -71,12 +71,16 @@ const AdminUserModel = {
       .skip((normalizedPage - 1) * normalizedLimit)
       .limit(normalizedLimit)
 
-    const [totalUsers, activeUsers, adminSupportUsers, customers] = await Promise.all([
+    const [totalUsers, activeUsers, adminUsers, supportUsers, shipperUsers, customers] = await Promise.all([
       User.countDocuments(),
       User.countDocuments({ status: 'active' }),
-      User.countDocuments({ role: { $in: ['admin', 'support'] } }),
+      User.countDocuments({ role: 'admin' }),
+      User.countDocuments({ role: 'support' }),
+      User.countDocuments({ role: 'shipper' }),
       User.countDocuments({ role: 'customer' })
     ])
+
+    const adminSupportUsers = adminUsers + supportUsers + shipperUsers
 
     return {
       users,
@@ -89,6 +93,9 @@ const AdminUserModel = {
       summary: {
         totalUsers,
         activeUsers,
+        adminUsers,
+        supportUsers,
+        shipperUsers,
         adminSupportUsers,
         customers
       }
