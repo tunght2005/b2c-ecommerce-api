@@ -29,7 +29,7 @@ const orderService = {
             };
         });
 
-        // 🟢 BẮT ĐẦU TÍNH TOÁN TIỀN GIẢM GIÁ TẠI BACKEND
+        // BẮT ĐẦU TÍNH TOÁN TIỀN GIẢM GIÁ TẠI BACKEND
         let discount_price = 0;
         if (voucher_id) {
             const voucher = await Voucher.findById(voucher_id);
@@ -102,6 +102,40 @@ const orderService = {
         await order.save()
 
         return order
+    },
+
+    // 4. [MỚI] Hủy đơn hàng
+    cancelOrder: async (order_id, user_id = null) => {
+        const order = await Order.findById(order_id);
+        
+        if (!order) {
+            throw new Error('Đơn hàng không tồn tại');
+        }
+
+        // Bổ sung bảo mật: Nếu user_id được truyền vào (tức là user tự hủy), 
+        // phải kiểm tra xem đơn hàng này có đúng là của user đó không.
+        if (user_id && order.user_id.toString() !== user_id.toString()) {
+            throw new Error('Bạn không có quyền hủy đơn hàng này');
+        }
+
+        // Chỉ cho phép hủy nếu đơn hàng đang ở trạng thái chờ xử lý hoặc đã xác nhận
+        // (Không thể hủy khi đang giao 'shipping' hoặc đã giao 'delivered')
+        if (order.status !== 'pending' && order.status !== 'confirmed') {
+            throw new Error(`Đơn hàng đang ở trạng thái '${order.status}', không thể hủy`);
+        }
+
+        // Cập nhật trạng thái thành 'cancelled'
+        order.status = 'cancelled';
+        await order.save();
+
+        //  LOGIC E-COMMERCE: Hoàn lại lượt sử dụng Voucher cho hệ thống
+        if (order.voucher_id) {
+            await Voucher.findByIdAndUpdate(order.voucher_id, {
+                $inc: { used_count: -1 } // Giảm số lượt đã dùng đi 1
+            });
+        }
+
+        return order;
     }
 };
 

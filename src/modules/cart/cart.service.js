@@ -62,6 +62,39 @@ const cartService = {
         }
 
         return cart;
+    },
+
+    // 4. [MỚI] Chỉnh sửa số lượng sản phẩm trong giỏ hàng
+    updateItemQuantity: async (user_id, variant_id, quantity) => {
+        // Xử lý thông minh: Nếu user giảm số lượng về 0 hoặc số âm -> Tự động xóa sản phẩm đó
+        if (Number(quantity) <= 0) {
+            return await cartService.removeFromCart(user_id, variant_id);
+        }
+
+        const cart = await Cart.findOne({ user_id });
+
+        if (!cart) {
+            throw new Error("Giỏ hàng không tồn tại");
+        }
+
+        // Tìm vị trí của sản phẩm trong giỏ hàng
+        const itemIndex = cart.items.findIndex(
+            item => item.variant_id.toString() === variant_id.toString()
+        );
+
+        if (itemIndex > -1) {
+            // Đã tìm thấy -> GHI ĐÈ số lượng mới (chứ không cộng dồn như addToCart)
+            cart.items[itemIndex].quantity = Number(quantity);
+            await cart.save();
+        } else {
+            throw new Error("Sản phẩm không có trong giỏ hàng để cập nhật");
+        }
+
+        // Tìm lại và populate để trả dữ liệu đầy đủ về cho Frontend
+        return await Cart.findOne({ user_id }).populate({
+            path: 'items.variant_id',
+            model: 'Variant'
+        });
     }
 };
 

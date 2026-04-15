@@ -13,4 +13,6 @@ router.get('/', authMiddleware,requireRole('customer'), orderController.getUserO
 // API Xác nhận đơn hàng (Admin)
 router.patch('/:id/confirm', authMiddleware, requireRole('admin'), orderController.confirmOrder);
 
+// Route cho User tự hủy đơn hàng
+router.put('/cancel/:id', authMiddleware, requireRole('customer'), orderController.cancelOrder);
 module.exports = router;
