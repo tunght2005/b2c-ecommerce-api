@@ -148,6 +148,84 @@ const orderService = {
 
     await Order.findByIdAndDelete(order_id)
     return order
+  },
+
+  // 6. [MỚI] Liệt kê tất cả đơn hàng cho admin/support/shipper (với filter, pagination, sort)
+  listAll: async ({
+    search,
+    status,
+    payment_status,
+    page = 1,
+    limit = 10,
+    sortBy = 'createdAt',
+    sortOrder = 'desc'
+  }) => {
+    // Xây dựng filter
+    const filter = {}
+
+    if (search && search.trim()) {
+      filter._id = { $regex: search.trim(), $options: 'i' }
+    }
+
+    if (status && status !== 'all') {
+      filter.status = status
+    }
+
+    if (payment_status && payment_status !== 'all') {
+      filter.payment_status = payment_status
+    }
+
+    // Normalize pagination
+    const normalizedLimit = Math.max(1, Math.min(parseInt(limit) || 10, 100))
+    const normalizedPage = Math.max(1, parseInt(page) || 1)
+    const totalItems = await Order.countDocuments(filter)
+    const totalPages = Math.max(1, Math.ceil(totalItems / normalizedLimit))
+    const safePage = Math.min(normalizedPage, totalPages)
+
+    // Normalize sort
+    const validSortFields = ['createdAt', 'updatedAt', 'status', 'payment_status', 'total_price', 'final_price']
+    const normalizedSortField = validSortFields.includes(sortBy) ? sortBy : 'createdAt'
+    const normalizedSortOrder = sortOrder === 'asc' ? 1 : -1
+
+    // Fetch orders
+    const orders = await Order.find(filter)
+      .populate({
+        path: 'items.variant_id',
+        model: 'Variant',
+        select: 'sku'
+      })
+      .populate({
+        path: 'voucher_id',
+        select: 'code discount_type discount_value'
+      })
+      .sort({ [normalizedSortField]: normalizedSortOrder })
+      .skip((safePage - 1) * normalizedLimit)
+      .limit(normalizedLimit)
+
+    // Tính thống kê
+    const allOrders = await Order.find()
+    const totalOrders = allOrders.length
+    const pendingOrders = allOrders.filter((o) => o.status === 'pending').length
+    const completedOrders = allOrders.filter((o) => o.status === 'completed').length
+    const cancelledOrders = allOrders.filter((o) => o.status === 'cancelled').length
+    const totalRevenue = allOrders.reduce((acc, o) => acc + o.final_price, 0)
+
+    return {
+      orders,
+      pagination: {
+        page: safePage,
+        limit: normalizedLimit,
+        totalItems,
+        totalPages
+      },
+      summary: {
+        totalOrders,
+        pendingOrders,
+        completedOrders,
+        cancelledOrders,
+        totalRevenue
+      }
+    }
   }
 }
 

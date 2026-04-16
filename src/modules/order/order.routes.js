@@ -18,4 +18,8 @@ router.put('/cancel/:id', authMiddleware, requireRole('customer'), orderControll
 
 // API xóa đơn hàng (Admin)
 router.delete('/:id', authMiddleware, requireRole('admin'), orderController.deleteOrder)
+
+// API liệt kê tất cả đơn hàng (Admin/Support/Shipper)
+router.get('/admin/list', authMiddleware, requireRole('admin', 'support', 'shipper'), orderController.getAllOrders)
+
 module.exports = router

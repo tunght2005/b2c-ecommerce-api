@@ -92,6 +92,30 @@ const orderController = {
     } catch (error) {
       res.status(400).json({ success: false, message: error.message })
     }
+  },
+
+  // 6. [MỚI] API liệt kê tất cả đơn hàng (admin/support/shipper)
+  getAllOrders: async (req, res) => {
+    try {
+      const { search, status, payment_status, page, limit, sortBy, sortOrder } = req.query
+
+      const result = await orderService.listAll({
+        search: search || '',
+        status: status || 'all',
+        payment_status: payment_status || 'all',
+        page: parseInt(page) || 1,
+        limit: parseInt(limit) || 10,
+        sortBy: sortBy || 'createdAt',
+        sortOrder: sortOrder || 'desc'
+      })
+
+      res.status(200).json({
+        success: true,
+        data: result
+      })
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message })
+    }
   }
 }
 
