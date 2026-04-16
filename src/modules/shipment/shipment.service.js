@@ -98,6 +98,10 @@ const shipmentService = {
       throw new Error('Order không tồn tại')
     }
 
+    if (order.payment_status === 'unpaid') {
+      throw new Error('Không thể gán shipment cho đơn hàng chưa thanh toán')
+    }
+
     if (order.status === 'cancelled') {
       throw new Error('Không thể giao đơn hàng đã bị hủy')
     }
@@ -274,6 +278,10 @@ const shipmentService = {
     const order = await Order.findById(order_id)
     if (!order) {
       throw new Error('Order không tồn tại')
+    }
+
+    if (order.payment_status === 'unpaid') {
+      throw new Error('Không thể tự động gán shipment cho đơn hàng chưa thanh toán')
     }
 
     if (order.status !== 'confirmed') {
