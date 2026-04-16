@@ -16,6 +16,82 @@ const allowedTransitions = {
 }
 
 const shipmentService = {
+  listAllShipments: async ({ status, page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'desc' }) => {
+    const filter = {}
+
+    if (status && status !== 'all') {
+      filter.status = status
+    }
+
+    const normalizedLimit = Math.max(1, Math.min(parseInt(limit) || 10, 100))
+    const normalizedPage = Math.max(1, parseInt(page) || 1)
+    const totalItems = await Shipment.countDocuments(filter)
+    const totalPages = Math.max(1, Math.ceil(totalItems / normalizedLimit))
+    const safePage = Math.min(normalizedPage, totalPages)
+
+    const validSortFields = ['createdAt', 'updatedAt', 'status', 'assigned_at', 'expected_delivery_at', 'delivered_at']
+    const normalizedSortField = validSortFields.includes(sortBy) ? sortBy : 'createdAt'
+    const normalizedSortOrder = sortOrder === 'asc' ? 1 : -1
+
+    const shipments = await Shipment.find(filter)
+      .populate({
+        path: 'order_id',
+        model: 'Order',
+        populate: [
+          {
+            path: 'user_id',
+            model: 'User',
+            select: 'username email phone role'
+          },
+          {
+            path: 'items.variant_id',
+            model: 'Variant',
+            select: 'sku'
+          },
+          {
+            path: 'voucher_id',
+            select: 'code discount_type discount_value'
+          }
+        ]
+      })
+      .populate({
+        path: 'delivery_staff_id',
+        model: 'DeliveryStaff',
+        populate: {
+          path: 'user_id',
+          model: 'User',
+          select: 'username email phone role'
+        }
+      })
+      .sort({ [normalizedSortField]: normalizedSortOrder })
+      .skip((safePage - 1) * normalizedLimit)
+      .limit(normalizedLimit)
+
+    const allShipments = await Shipment.find(filter)
+    const totalShipments = allShipments.length
+    const pendingShipments = allShipments.filter((item) => item.status === 'pending').length
+    const assignedShipments = allShipments.filter((item) => item.status === 'assigned').length
+    const inTransitShipments = allShipments.filter((item) => item.status === 'in_transit').length
+    const deliveredShipments = allShipments.filter((item) => item.status === 'delivered').length
+
+    return {
+      shipments: shipments.map((shipment) => shipment.toObject()),
+      pagination: {
+        page: safePage,
+        limit: normalizedLimit,
+        totalItems,
+        totalPages
+      },
+      summary: {
+        totalShipments,
+        pendingShipments,
+        assignedShipments,
+        inTransitShipments,
+        deliveredShipments
+      }
+    }
+  },
+
   assignShipper: async ({ order_id, delivery_staff_id, expected_delivery_at, note }) => {
     const order = await Order.findById(order_id)
     if (!order) {
@@ -74,7 +150,7 @@ const shipmentService = {
     if (!allowedTransitions[currentStatus]?.includes(status)) {
       throw new Error(
         `Không thể đổi từ trạng thái '${currentStatus}' sang '${status}'. ` +
-        `Các trạng thái được phép: ${allowedTransitions[currentStatus]?.join(', ') || 'không có'}`
+          `Các trạng thái được phép: ${allowedTransitions[currentStatus]?.join(', ') || 'không có'}`
       )
     }
 
@@ -135,8 +211,35 @@ const shipmentService = {
       return []
     }
     return await Shipment.find({ delivery_staff_id: staff._id })
-      .populate({ path: 'order_id', model: 'Order' })
-      .populate({ path: 'delivery_staff_id', model: 'DeliveryStaff' })
+      .populate({
+        path: 'order_id',
+        model: 'Order',
+        populate: [
+          {
+            path: 'user_id',
+            model: 'User',
+            select: 'username email phone role'
+          },
+          {
+            path: 'items.variant_id',
+            model: 'Variant',
+            select: 'sku'
+          },
+          {
+            path: 'voucher_id',
+            select: 'code discount_type discount_value'
+          }
+        ]
+      })
+      .populate({
+        path: 'delivery_staff_id',
+        model: 'DeliveryStaff',
+        populate: {
+          path: 'user_id',
+          model: 'User',
+          select: 'username email phone role'
+        }
+      })
   },
 
   createDeliveryStaff: async ({ user_id, name, phone, email, status = 'active' }) => {
@@ -158,7 +261,13 @@ const shipmentService = {
   },
 
   listDeliveryStaff: async () => {
-    return await DeliveryStaff.find().sort({ createdAt: -1 })
+    return await DeliveryStaff.find()
+      .populate({
+        path: 'user_id',
+        model: 'User',
+        select: 'username email phone role'
+      })
+      .sort({ createdAt: -1 })
   },
 
   autoAssignShipper: async ({ order_id, expected_delivery_at, note }) => {
@@ -194,9 +303,7 @@ const shipmentService = {
     )
 
     // Chọn shipper có workload thấp nhất
-    const selected = shipperWorkload.reduce((prev, curr) =>
-      curr.activeShipments < prev.activeShipments ? curr : prev
-    )
+    const selected = shipperWorkload.reduce((prev, curr) => (curr.activeShipments < prev.activeShipments ? curr : prev))
 
     const delivery_staff_id = selected.shipper._id
 

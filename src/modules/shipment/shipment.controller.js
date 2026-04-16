@@ -1,6 +1,24 @@
 const shipmentService = require('./shipment.service')
 
 const shipmentController = {
+  listShipments: async (req, res) => {
+    try {
+      const { status, page, limit, sortBy, sortOrder } = req.query
+
+      const result = await shipmentService.listAllShipments({
+        status: status || 'all',
+        page: parseInt(page) || 1,
+        limit: parseInt(limit) || 10,
+        sortBy: sortBy || 'createdAt',
+        sortOrder: sortOrder || 'desc'
+      })
+
+      res.status(200).json({ success: true, data: result })
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message })
+    }
+  },
+
   assignShipper: async (req, res) => {
     try {
       const { order_id, delivery_staff_id, expected_delivery_at, note } = req.body

@@ -4,6 +4,7 @@ const shipmentController = require('./shipment.controller')
 const authMiddleware = require('../../middlewares/auth.middleware')
 const requireRole = require('../../middlewares/role.middleware')
 
+router.get('/admin/list', authMiddleware, requireRole('admin'), shipmentController.listShipments)
 router.post('/assign', authMiddleware, requireRole('admin'), shipmentController.assignShipper)
 router.post('/auto-assign', authMiddleware, requireRole('admin'), shipmentController.autoAssignShipper)
 router.patch('/:id/status', authMiddleware, requireRole('admin', 'shipper'), shipmentController.updateStatus)
