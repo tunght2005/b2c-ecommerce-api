@@ -1,6 +1,7 @@
 const Order = require('./order.model')
 const Cart = require('../cart/cart.model')
 const Voucher = require('../voucher/voucher.model')
+const Shipment = require('../shipment/shipment.model')
 const voucherService = require('../voucher/voucher.service') // NHÚNG THÊM ĐỂ TÍNH TIỀN
 
 const orderService = {
@@ -190,6 +191,11 @@ const orderService = {
     // Fetch orders
     const orders = await Order.find(filter)
       .populate({
+        path: 'user_id',
+        model: 'User',
+        select: 'username email phone role'
+      })
+      .populate({
         path: 'items.variant_id',
         model: 'Variant',
         select: 'sku'
@@ -202,6 +208,30 @@ const orderService = {
       .skip((safePage - 1) * normalizedLimit)
       .limit(normalizedLimit)
 
+    const orderIds = orders.map((order) => order._id)
+    const shipments = await Shipment.find({ order_id: { $in: orderIds } })
+      .populate({
+        path: 'delivery_staff_id',
+        model: 'DeliveryStaff',
+        select: 'name phone email user_id',
+        populate: {
+          path: 'user_id',
+          model: 'User',
+          select: 'username email phone role'
+        }
+      })
+      .select('order_id status delivery_staff_id')
+
+    const shipmentByOrderId = new Map(shipments.map((shipment) => [shipment.order_id.toString(), shipment.toObject()]))
+
+    const ordersWithShipment = orders.map((order) => {
+      const orderObject = order.toObject()
+      return {
+        ...orderObject,
+        shipment: shipmentByOrderId.get(order._id.toString()) || null
+      }
+    })
+
     // Tính thống kê
     const allOrders = await Order.find()
     const totalOrders = allOrders.length
@@ -211,7 +241,7 @@ const orderService = {
     const totalRevenue = allOrders.reduce((acc, o) => acc + o.final_price, 0)
 
     return {
-      orders,
+      orders: ordersWithShipment,
       pagination: {
         page: safePage,
         limit: normalizedLimit,
