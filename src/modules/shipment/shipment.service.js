@@ -139,7 +139,7 @@ const shipmentService = {
     return shipment
   },
 
-  updateShipmentStatus: async ({ shipment_id, status, location, note, isShipper = false }) => {
+  updateShipmentStatus: async ({ shipment_id, status, location, note, isShipper = false, requesterUserId }) => {
     if (!validStatuses.includes(status)) {
       throw new Error(`Trạng thái không hợp lệ. Các giá trị hợp lệ: ${validStatuses.join(', ')}`)
     }
@@ -147,6 +147,17 @@ const shipmentService = {
     const shipment = await Shipment.findById(shipment_id)
     if (!shipment) {
       throw new Error('Shipment không tồn tại')
+    }
+
+    if (isShipper) {
+      const staff = await DeliveryStaff.findOne({ user_id: requesterUserId, status: 'active' })
+      if (!staff) {
+        throw new Error('Shipper không hợp lệ hoặc chưa được kích hoạt')
+      }
+
+      if (!shipment.delivery_staff_id || shipment.delivery_staff_id.toString() !== staff._id.toString()) {
+        throw new Error('Bạn chỉ được cập nhật shipment được gán cho mình')
+      }
     }
 
     // Kiểm tra state transition có hợp lệ không
@@ -201,11 +212,23 @@ const shipmentService = {
     return shipment
   },
 
-  getShipmentLogs: async (shipment_id) => {
+  getShipmentLogs: async ({ shipment_id, requesterRole, requesterUserId }) => {
     const shipment = await Shipment.findById(shipment_id)
     if (!shipment) {
       throw new Error('Shipment không tồn tại')
     }
+
+    if (requesterRole === 'shipper') {
+      const staff = await DeliveryStaff.findOne({ user_id: requesterUserId, status: 'active' })
+      if (!staff) {
+        throw new Error('Shipper không hợp lệ hoặc chưa được kích hoạt')
+      }
+
+      if (!shipment.delivery_staff_id || shipment.delivery_staff_id.toString() !== staff._id.toString()) {
+        throw new Error('Bạn chỉ được xem log của shipment được gán cho mình')
+      }
+    }
+
     return await ShipmentTrackingLog.find({ shipment_id }).sort({ createdAt: 1 })
   },
 

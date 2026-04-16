@@ -54,7 +54,8 @@ const shipmentController = {
         status,
         location,
         note,
-        isShipper
+        isShipper,
+        requesterUserId: req.user.id
       })
 
       res.status(200).json({ success: true, data: shipment })
@@ -66,7 +67,11 @@ const shipmentController = {
   getTrackingLogs: async (req, res) => {
     try {
       const shipment_id = req.params.id
-      const logs = await shipmentService.getShipmentLogs(shipment_id)
+      const logs = await shipmentService.getShipmentLogs({
+        shipment_id,
+        requesterRole: req.user.role,
+        requesterUserId: req.user.id
+      })
       res.status(200).json({ success: true, data: logs })
     } catch (error) {
       res.status(400).json({ success: false, message: error.message })

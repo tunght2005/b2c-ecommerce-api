@@ -5,13 +5,13 @@ const authMiddleware = require('../../middlewares/auth.middleware')
 const requireRole = require('../../middlewares/role.middleware')
 
 router.get('/admin/list', authMiddleware, requireRole('admin', 'support'), shipmentController.listShipments)
-router.post('/assign', authMiddleware, requireRole('admin'), shipmentController.assignShipper)
-router.post('/auto-assign', authMiddleware, requireRole('admin'), shipmentController.autoAssignShipper)
-router.patch('/:id/status', authMiddleware, requireRole('admin', 'support', 'shipper'), shipmentController.updateStatus)
-router.get('/:id/logs', authMiddleware, requireRole('admin', 'support', 'shipper'), shipmentController.getTrackingLogs)
+router.post('/assign', authMiddleware, requireRole('admin', 'support'), shipmentController.assignShipper)
+router.post('/auto-assign', authMiddleware, requireRole('admin', 'support'), shipmentController.autoAssignShipper)
+router.patch('/:id/status', authMiddleware, requireRole('admin', 'shipper', 'support'), shipmentController.updateStatus)
+router.get('/:id/logs', authMiddleware, requireRole('admin', 'shipper', 'support'), shipmentController.getTrackingLogs)
 router.get('/assigned-orders', authMiddleware, requireRole('shipper'), shipmentController.getAssignedOrders)
 
 router.post('/delivery-staff', authMiddleware, requireRole('admin'), shipmentController.createDeliveryStaff)
-router.get('/delivery-staff', authMiddleware, requireRole('admin'), shipmentController.listDeliveryStaff)
+router.get('/delivery-staff', authMiddleware, requireRole('admin', 'support'), shipmentController.listDeliveryStaff)
 
 module.exports = router
