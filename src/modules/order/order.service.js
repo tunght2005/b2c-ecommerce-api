@@ -2,6 +2,7 @@ const Order = require('./order.model')
 const Cart = require('../cart/cart.model')
 const Voucher = require('../voucher/voucher.model')
 const Shipment = require('../shipment/shipment.model')
+const DeliveryStaff = require('../shipment/deliveryStaff.model')
 const voucherService = require('../voucher/voucher.service') // NHÚNG THÊM ĐỂ TÍNH TIỀN
 
 const orderService = {
@@ -156,6 +157,8 @@ const orderService = {
     search,
     status,
     payment_status,
+    requesterRole,
+    requesterUserId,
     page = 1,
     limit = 10,
     sortBy = 'createdAt',
@@ -174,6 +177,33 @@ const orderService = {
 
     if (payment_status && payment_status !== 'all') {
       filter.payment_status = payment_status
+    }
+
+    if (requesterRole === 'shipper') {
+      const staff = await DeliveryStaff.findOne({ user_id: requesterUserId, status: 'active' }).select('_id')
+
+      if (!staff) {
+        return {
+          orders: [],
+          pagination: {
+            page: 1,
+            limit: Math.max(1, Math.min(parseInt(limit) || 10, 100)),
+            totalItems: 0,
+            totalPages: 1
+          },
+          summary: {
+            totalOrders: 0,
+            pendingOrders: 0,
+            completedOrders: 0,
+            cancelledOrders: 0,
+            totalRevenue: 0
+          }
+        }
+      }
+
+      const assignedShipments = await Shipment.find({ delivery_staff_id: staff._id }).select('order_id')
+      const assignedOrderIds = assignedShipments.map((shipment) => shipment.order_id).filter(Boolean)
+      filter._id = { $in: assignedOrderIds }
     }
 
     // Normalize pagination
@@ -233,7 +263,12 @@ const orderService = {
     })
 
     // Tính thống kê
-    const allOrders = await Order.find()
+    const summaryFilter = { ...filter }
+    if (search && search.trim()) {
+      delete summaryFilter._id
+    }
+
+    const allOrders = await Order.find(summaryFilter)
     const totalOrders = allOrders.length
     const pendingOrders = allOrders.filter((o) => o.status === 'pending').length
     const completedOrders = allOrders.filter((o) => o.status === 'completed').length

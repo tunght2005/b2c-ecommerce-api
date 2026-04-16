@@ -103,6 +103,8 @@ const orderController = {
         search: search || '',
         status: status || 'all',
         payment_status: payment_status || 'all',
+        requesterRole: req.user.role,
+        requesterUserId: req.user.id,
         page: parseInt(page) || 1,
         limit: parseInt(limit) || 10,
         sortBy: sortBy || 'createdAt',
