@@ -36,6 +36,11 @@ const shipmentService = {
 
     const shipments = await Shipment.find(filter)
       .populate({
+        path: 'delivery_address_id',
+        model: 'Address',
+        select: 'receiver_name phone province district ward detail latitude longitude is_default'
+      })
+      .populate({
         path: 'order_id',
         model: 'Order',
         populate: [
@@ -43,6 +48,11 @@ const shipmentService = {
             path: 'user_id',
             model: 'User',
             select: 'username email phone role'
+          },
+          {
+            path: 'address_id',
+            model: 'Address',
+            select: 'receiver_name phone province district ward detail latitude longitude is_default'
           },
           {
             path: 'items.variant_id',
@@ -119,6 +129,7 @@ const shipmentService = {
 
     const shipment = new Shipment({
       order_id,
+      delivery_address_id: order.address_id || null,
       delivery_staff_id,
       status: 'assigned',
       assigned_at: new Date(),
@@ -244,6 +255,11 @@ const shipmentService = {
     }
     return await Shipment.find({ delivery_staff_id: staff._id })
       .populate({
+        path: 'delivery_address_id',
+        model: 'Address',
+        select: 'receiver_name phone province district ward detail latitude longitude is_default'
+      })
+      .populate({
         path: 'order_id',
         model: 'Order',
         populate: [
@@ -251,6 +267,11 @@ const shipmentService = {
             path: 'user_id',
             model: 'User',
             select: 'username email phone role'
+          },
+          {
+            path: 'address_id',
+            model: 'Address',
+            select: 'receiver_name phone province district ward detail latitude longitude is_default'
           },
           {
             path: 'items.variant_id',
@@ -345,6 +366,7 @@ const shipmentService = {
 
     const shipment = new Shipment({
       order_id,
+      delivery_address_id: order.address_id || null,
       delivery_staff_id,
       status: 'assigned',
       assigned_at: new Date(),

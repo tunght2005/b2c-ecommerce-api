@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "b2c-ecommerce-complete-collection",
     "name": "B2C E-Commerce Complete API Collection",
-    "description": "Tổng hợp toàn bộ API collections cho B2C E-Commerce Backend - gồm Auth, User, Cart, Order, Payment, Voucher, Promotion, Feedback, Chatbot, Brand, Category, Product, Attribute, Variant, Product Image",
+    "description": "Tổng hợp toàn bộ API collections cho B2C E-Commerce Backend - gồm Auth, User, Cart, Order, Payment, Voucher, Promotion, Feedback, Chatbot, Review, Wishlist, Brand, Category, Product, Attribute, Variant, Product Image",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "combined"
   },
@@ -1042,6 +1042,34 @@
           "response": []
         },
         {
+          "name": "Create Feedback By Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": \"{{order_id}}\",\n  \"title\": \"Feedback cho đơn hàng\",\n  \"content\": \"Đơn giao chậm hơn dự kiến, cần hỗ trợ\",\n  \"priority\": \"medium\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback",
+              "host": ["{{base_url}}"],
+              "path": ["feedback"]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Get My Feedbacks",
           "request": {
             "method": "GET",
@@ -1056,6 +1084,25 @@
               "raw": "{{base_url}}/feedback/my",
               "host": ["{{base_url}}"],
               "path": ["feedback", "my"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Eligible Orders For Feedback",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/eligible-orders",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "eligible-orders"]
             }
           },
           "response": []
@@ -1108,6 +1155,25 @@
           "response": []
         },
         {
+          "name": "Get Feedback Replies",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}/replies",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}", "replies"]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Rate Feedback",
           "request": {
             "method": "POST",
@@ -1131,6 +1197,118 @@
               "raw": "{{base_url}}/feedback/{{feedback_id}}/rate",
               "host": ["{{base_url}}"],
               "path": ["feedback", "{{feedback_id}}", "rate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Feedback Rating",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 4,\n  \"comment\": \"Đã cập nhật đánh giá sau khi được hỗ trợ\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/rating/{{rating_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "rating", "{{rating_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Feedback Rating",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/rating/{{rating_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "rating", "{{rating_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/Support - List All Feedbacks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback?status=open&priority=high&page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["feedback"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "open"
+                },
+                {
+                  "key": "priority",
+                  "value": "high"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/Support - Update Feedback",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_progress\",\n  \"priority\": \"high\",\n  \"assigned_to\": \"{{support_user_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}"]
             }
           },
           "response": []
@@ -1210,6 +1388,337 @@
               "raw": "{{base_url}}/chatbot/search-products",
               "host": ["{{base_url}}"],
               "path": ["chatbot", "search-products"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin - Get Config",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/chatbot/admin/config",
+              "host": ["{{base_url}}"],
+              "path": ["chatbot", "admin", "config"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin - Update Stop Words",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stopWords\": [\n    \"là\",\n    \"có\",\n    \"để\",\n    \"và\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chatbot/admin/config/stop-words",
+              "host": ["{{base_url}}"],
+              "path": ["chatbot", "admin", "config", "stop-words"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/Support - Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/chatbot/admin/analytics?startDate=2026-01-01&endDate=2026-12-31&limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["chatbot", "admin", "analytics"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2026-01-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2026-12-31"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/Support - Unknown Queries",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/chatbot/admin/unknown-queries?limit=20&page=1",
+              "host": ["{{base_url}}"],
+              "path": ["chatbot", "admin", "unknown-queries"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": \"{{product_id}}\",\n  \"rating\": 5,\n  \"content\": \"Sản phẩm tốt, đáng mua\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reviews",
+              "host": ["{{base_url}}"],
+              "path": ["reviews"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Reviews By Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reviews/product/{{product_id}}?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["reviews", "product", "{{product_id}}"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Reviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reviews/my?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["reviews", "my"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Review",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 4,\n  \"content\": \"Sản phẩm ổn, giao hàng nhanh\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reviews/{{review_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["reviews", "{{review_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Review",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reviews/{{review_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["reviews", "{{review_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Wishlist",
+      "item": [
+        {
+          "name": "Get My Wishlist",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/wishlist",
+              "host": ["{{base_url}}"],
+              "path": ["wishlist"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add To Wishlist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": \"{{product_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/wishlist",
+              "host": ["{{base_url}}"],
+              "path": ["wishlist"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove From Wishlist",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/wishlist/product/{{product_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["wishlist", "product", "{{product_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Clear Wishlist",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/wishlist",
+              "host": ["{{base_url}}"],
+              "path": ["wishlist"]
             }
           },
           "response": []

@@ -79,6 +79,11 @@ const orderService = {
     return await Order.find({ user_id })
       .sort({ createdAt: -1 }) // Sắp xếp đơn mới nhất lên đầu
       .populate({
+        path: 'address_id',
+        model: 'Address',
+        select: 'receiver_name phone province district ward detail latitude longitude is_default'
+      })
+      .populate({
         path: 'items.variant_id',
         model: 'Variant',
         select: 'sku' // Chỉ lấy mã SKU cho nhẹ
@@ -224,6 +229,11 @@ const orderService = {
         path: 'user_id',
         model: 'User',
         select: 'username email phone role'
+      })
+      .populate({
+        path: 'address_id',
+        model: 'Address',
+        select: 'receiver_name phone province district ward detail latitude longitude is_default'
       })
       .populate({
         path: 'items.variant_id',
