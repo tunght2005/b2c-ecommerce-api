@@ -4,6 +4,9 @@ const FeedbackAttachment = require('./feedbackAttachment.model')
 const FeedbackRating = require('./feedbackRating.model')
 const { User } = require('../auth/auth.model')
 
+const ELIGIBLE_ORDER_STATUS = 'completed'
+const ELIGIBLE_PAYMENT_STATUS = 'paid'
+
 const feedbackService = {
   // 1. Tạo feedback ticket mới
   createFeedback: async ({ user_id, order_id, product_id, title, content, priority = 'medium' }) => {
@@ -18,6 +21,15 @@ const feedbackService = {
       const order = await Order.findOne({ _id: order_id, user_id })
       if (!order) {
         throw new Error('Đơn hàng không tồn tại hoặc không thuộc về bạn')
+      }
+
+      if (order.status !== ELIGIBLE_ORDER_STATUS || order.payment_status !== ELIGIBLE_PAYMENT_STATUS) {
+        throw new Error('Chỉ được tạo feedback cho đơn hàng đã hoàn tất và đã thanh toán')
+      }
+
+      const existingOrderFeedback = await Feedback.findOne({ user_id, order_id })
+      if (existingOrderFeedback) {
+        throw new Error('Bạn đã gửi feedback cho đơn hàng này rồi')
       }
     }
 
@@ -46,16 +58,39 @@ const feedbackService = {
   // 2. Lấy danh sách feedback của user
   getUserFeedbacks: async (user_id) => {
     return await Feedback.find({ user_id })
-      .populate('order_id', 'final_price status')
+      .populate('order_id', 'final_price status payment_status')
       .populate('product_id', 'name status')
       .populate('assigned_to', 'username')
       .sort({ createdAt: -1 })
   },
 
+  // 2.1. Lấy danh sách đơn đủ điều kiện để user tạo feedback
+  getEligibleOrdersForFeedback: async (user_id) => {
+    const Order = require('../order/order.model')
+
+    const eligibleOrders = await Order.find({
+      user_id,
+      status: ELIGIBLE_ORDER_STATUS,
+      payment_status: ELIGIBLE_PAYMENT_STATUS
+    })
+      .select('_id final_price status payment_status createdAt updatedAt')
+      .sort({ createdAt: -1 })
+
+    const orderIds = eligibleOrders.map((order) => order._id)
+    const existingOrderFeedbacks = await Feedback.find({
+      user_id,
+      order_id: { $in: orderIds }
+    }).select('order_id')
+
+    const existingOrderFeedbackSet = new Set(existingOrderFeedbacks.map((item) => String(item.order_id)))
+
+    return eligibleOrders.filter((order) => !existingOrderFeedbackSet.has(String(order._id)))
+  },
+
   // 3. Lấy chi tiết feedback
   getFeedbackDetail: async (feedback_id, user_id) => {
     const feedback = await Feedback.findById(feedback_id)
-      .populate('order_id', 'final_price status')
+      .populate('order_id', 'final_price status payment_status')
       .populate('product_id', 'name status')
       .populate('assigned_to', 'username')
       .populate('user_id', 'username email')
@@ -225,6 +260,7 @@ const feedbackService = {
 
     const feedbacks = await Feedback.find(query)
       .populate('user_id', 'username email')
+      .populate('order_id', 'final_price status payment_status')
       .populate('product_id', 'name status')
       .populate('assigned_to', 'username')
       .sort({ createdAt: -1 })

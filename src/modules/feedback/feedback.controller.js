@@ -52,6 +52,18 @@ const feedbackController = {
     }
   },
 
+  // 2.1. Lấy danh sách đơn hàng đủ điều kiện để tạo feedback
+  getEligibleOrdersForFeedback: async (req, res) => {
+    try {
+      const user_id = req.user.id
+      const orders = await feedbackService.getEligibleOrdersForFeedback(user_id)
+
+      res.status(200).json({ success: true, data: orders })
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message })
+    }
+  },
+
   // 3. Lấy chi tiết feedback
   getFeedbackDetail: async (req, res) => {
     try {
