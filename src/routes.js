@@ -20,6 +20,8 @@ router.use('/payment', require('./modules/payment/payment.routes'))
 router.use('/vouchers', require('./modules/voucher/voucher.routes'))
 router.use('/shipment', require('./modules/shipment/shipment.routes'))
 router.use('/feedback', require('./modules/feedback/feedback.routes'))
+router.use('/reviews', require('./modules/review/review.routes'))
+router.use('/wishlist', require('./modules/wishlist/wishlist.routes'))
 router.use('/chatbot', require('./modules/chatbot/chatbot.routes'))
 router.use('/after-sales', require('./modules/afterSales/afterSales.routes'))
 module.exports = router
