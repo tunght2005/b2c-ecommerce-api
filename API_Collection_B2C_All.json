@@ -33,8 +33,13 @@
             "url": {
               "raw": "{{base_url}}/auth/register",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "register"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
             }
           },
           "response": []
@@ -62,8 +67,13 @@
             "url": {
               "raw": "{{base_url}}/auth/login",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "login"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
             }
           },
           "response": []
@@ -91,8 +101,13 @@
             "url": {
               "raw": "{{base_url}}/auth/refresh-token",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "refresh-token"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-token"
+              ]
             }
           },
           "response": []
@@ -130,8 +145,13 @@
             "url": {
               "raw": "{{base_url}}/auth/logout",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "logout"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
             }
           },
           "response": []
@@ -177,8 +197,13 @@
             "url": {
               "raw": "{{base_url}}/user/profile",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["user", "profile"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "profile"
+              ]
             }
           },
           "response": []
@@ -216,8 +241,13 @@
             "url": {
               "raw": "{{base_url}}/user/profile",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["user", "profile"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "profile"
+              ]
             }
           },
           "response": []
@@ -249,8 +279,13 @@
             "url": {
               "raw": "{{base_url}}/user/change-password",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["user", "change-password"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "change-password"
+              ]
             }
           },
           "response": []
@@ -296,8 +331,12 @@
             "url": {
               "raw": "{{base_url}}/address",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["address"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "address"
+              ]
             }
           },
           "response": []
@@ -335,8 +374,12 @@
             "url": {
               "raw": "{{base_url}}/address",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["address"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "address"
+              ]
             }
           },
           "response": []
@@ -374,8 +417,13 @@
             "url": {
               "raw": "{{base_url}}/address/:id",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["address", ":id"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "address",
+                ":id"
+              ]
             }
           },
           "response": []
@@ -407,8 +455,13 @@
             "url": {
               "raw": "{{base_url}}/address/:id",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["address", ":id"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "address",
+                ":id"
+              ]
             }
           },
           "response": []
@@ -440,8 +493,14 @@
             "url": {
               "raw": "{{base_url}}/address/:id/default",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["address", ":id", "default"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "address",
+                ":id",
+                "default"
+              ]
             }
           },
           "response": []
@@ -487,8 +546,12 @@
             "url": {
               "raw": "{{base_url}}/notification",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["notification"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notification"
+              ]
             }
           },
           "response": []
@@ -520,8 +583,14 @@
             "url": {
               "raw": "{{base_url}}/notification/:id/read",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["notification", ":id", "read"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notification",
+                ":id",
+                "read"
+              ]
             }
           },
           "response": []
@@ -553,8 +622,13 @@
             "url": {
               "raw": "{{base_url}}/notification/read-all",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["notification", "read-all"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notification",
+                "read-all"
+              ]
             }
           },
           "response": []
@@ -577,8 +651,12 @@
             ],
             "url": {
               "raw": "{{base_url}}/cart",
-              "host": ["{{base_url}}"],
-              "path": ["cart"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart"
+              ]
             }
           },
           "response": []
@@ -611,8 +689,13 @@
             "url": {
               "raw": "{{base_url}}/cart/add",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["cart", "add"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                "add"
+              ]
             }
           },
           "response": []
@@ -639,8 +722,13 @@
             },
             "url": {
               "raw": "{{base_url}}/cart/remove",
-              "host": ["{{base_url}}"],
-              "path": ["cart", "remove"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                "remove"
+              ]
             }
           },
           "response": []
@@ -673,8 +761,13 @@
             "url": {
               "raw": "{{base_url}}/cart/update",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["cart", "update"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                "update"
+              ]
             }
           },
           "response": []
@@ -711,8 +804,13 @@
             "url": {
               "raw": "{{base_url}}/order/create",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["order", "create"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "order",
+                "create"
+              ]
             }
           },
           "response": []
@@ -734,8 +832,12 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/order",
-              "host": ["{{base_url}}"],
-              "path": ["order"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "order"
+              ]
             }
           },
           "response": []
@@ -758,8 +860,14 @@
             "url": {
               "raw": "{{base_url}}/order/{{order_id}}/confirm",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["order", "{{order_id}}", "confirm"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "order",
+                "{{order_id}}",
+                "confirm"
+              ]
             }
           },
           "response": []
@@ -782,8 +890,14 @@
             "url": {
               "raw": "{{base_url}}/order/cancel/{{order_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["order", "cancel", "{{order_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "order",
+                "cancel",
+                "{{order_id}}"
+              ]
             }
           },
           "response": []
@@ -806,8 +920,13 @@
             "url": {
               "raw": "{{base_url}}/order/{{order_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["order", "{{order_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "order",
+                "{{order_id}}"
+              ]
             }
           },
           "response": []
@@ -843,8 +962,13 @@
             },
             "url": {
               "raw": "{{base_url}}/vouchers/create",
-              "host": ["{{base_url}}"],
-              "path": ["vouchers", "create"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "vouchers",
+                "create"
+              ]
             }
           },
           "response": []
@@ -875,8 +999,13 @@
             },
             "url": {
               "raw": "{{base_url}}/vouchers/apply",
-              "host": ["{{base_url}}"],
-              "path": ["vouchers", "apply"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "vouchers",
+                "apply"
+              ]
             }
           },
           "response": []
@@ -913,8 +1042,12 @@
             "url": {
               "raw": "{{base_url}}/promotions",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["promotions"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "promotions"
+              ]
             }
           },
           "response": []
@@ -941,8 +1074,12 @@
             "url": {
               "raw": "{{base_url}}/promotions",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["promotions"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "promotions"
+              ]
             }
           },
           "response": []
@@ -974,8 +1111,13 @@
             "url": {
               "raw": "{{base_url}}/promotions/assign",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["promotions", "assign"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "promotions",
+                "assign"
+              ]
             }
           },
           "response": []
@@ -988,8 +1130,12 @@
             "url": {
               "raw": "{{base_url}}/promotions",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["promotions"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "promotions"
+              ]
             }
           },
           "response": []
@@ -1002,8 +1148,14 @@
             "url": {
               "raw": "{{base_url}}/promotions/best/{{product_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["promotions", "best", "{{product_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "promotions",
+                "best",
+                "{{product_id}}"
+              ]
             }
           },
           "response": []
@@ -1035,8 +1187,12 @@
             },
             "url": {
               "raw": "{{base_url}}/feedback",
-              "host": ["{{base_url}}"],
-              "path": ["feedback"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "feedback"
+              ]
             }
           },
           "response": []
@@ -1054,8 +1210,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/feedback/my",
-              "host": ["{{base_url}}"],
-              "path": ["feedback", "my"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "feedback",
+                "my"
+              ]
             }
           },
           "response": []
@@ -1073,8 +1234,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/feedback/{{feedback_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["feedback", "{{feedback_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "feedback",
+                "{{feedback_id}}"
+              ]
             }
           },
           "response": []
@@ -1101,8 +1267,14 @@
             },
             "url": {
               "raw": "{{base_url}}/feedback/{{feedback_id}}/reply",
-              "host": ["{{base_url}}"],
-              "path": ["feedback", "{{feedback_id}}", "reply"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "feedback",
+                "{{feedback_id}}",
+                "reply"
+              ]
             }
           },
           "response": []
@@ -1129,8 +1301,14 @@
             },
             "url": {
               "raw": "{{base_url}}/feedback/{{feedback_id}}/rate",
-              "host": ["{{base_url}}"],
-              "path": ["feedback", "{{feedback_id}}", "rate"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "feedback",
+                "{{feedback_id}}",
+                "rate"
+              ]
             }
           },
           "response": []
@@ -1161,8 +1339,13 @@
             },
             "url": {
               "raw": "{{base_url}}/chatbot/message",
-              "host": ["{{base_url}}"],
-              "path": ["chatbot", "message"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chatbot",
+                "message"
+              ]
             }
           },
           "response": []
@@ -1180,8 +1363,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/chatbot/history?limit=20",
-              "host": ["{{base_url}}"],
-              "path": ["chatbot", "history"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chatbot",
+                "history"
+              ],
               "query": [
                 {
                   "key": "limit",
@@ -1208,8 +1396,13 @@
             },
             "url": {
               "raw": "{{base_url}}/chatbot/search-products",
-              "host": ["{{base_url}}"],
-              "path": ["chatbot", "search-products"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chatbot",
+                "search-products"
+              ]
             }
           },
           "response": []
@@ -1252,8 +1445,12 @@
             "url": {
               "raw": "{{base_url}}/brands",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["brands"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands"
+              ]
             }
           },
           "response": []
@@ -1266,8 +1463,12 @@
             "url": {
               "raw": "{{base_url}}/brands",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["brands"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands"
+              ]
             }
           },
           "response": []
@@ -1290,8 +1491,13 @@
             "url": {
               "raw": "{{base_url}}/brands/{{brand_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["brands", "{{brand_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands",
+                "{{brand_id}}"
+              ]
             }
           },
           "response": []
@@ -1328,8 +1534,12 @@
             "url": {
               "raw": "{{base_url}}/categories",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["categories"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories"
+              ]
             }
           },
           "response": []
@@ -1342,8 +1552,12 @@
             "url": {
               "raw": "{{base_url}}/categories",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["categories"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories"
+              ]
             }
           },
           "response": []
@@ -1366,8 +1580,13 @@
             "url": {
               "raw": "{{base_url}}/categories/{{category_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["categories", "{{category_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "{{category_id}}"
+              ]
             }
           },
           "response": []
@@ -1404,8 +1623,12 @@
             "url": {
               "raw": "{{base_url}}/products",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["products"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ]
             }
           },
           "response": []
@@ -1418,8 +1641,12 @@
             "url": {
               "raw": "{{base_url}}/products",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["products"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ]
             }
           },
           "response": []
@@ -1432,8 +1659,13 @@
             "url": {
               "raw": "{{base_url}}/products/search?q=laptop",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["products", "search"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "search"
+              ],
               "query": [
                 {
                   "key": "q",
@@ -1452,8 +1684,13 @@
             "url": {
               "raw": "{{base_url}}/products/{{product_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["products", "{{product_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}"
+              ]
             }
           },
           "response": []
@@ -1476,8 +1713,13 @@
             "url": {
               "raw": "{{base_url}}/products/{{product_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["products", "{{product_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}"
+              ]
             }
           },
           "response": []
@@ -1514,8 +1756,12 @@
             "url": {
               "raw": "{{base_url}}/attributes",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["attributes"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "attributes"
+              ]
             }
           },
           "response": []
@@ -1528,8 +1774,12 @@
             "url": {
               "raw": "{{base_url}}/attributes",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["attributes"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "attributes"
+              ]
             }
           },
           "response": []
@@ -1542,8 +1792,14 @@
             "url": {
               "raw": "{{base_url}}/attributes/group/{{attribute_group_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["attributes", "group", "{{attribute_group_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "attributes",
+                "group",
+                "{{attribute_group_id}}"
+              ]
             }
           },
           "response": []
@@ -1575,8 +1831,13 @@
             "url": {
               "raw": "{{base_url}}/attributes/{{attribute_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["attributes", "{{attribute_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "attributes",
+                "{{attribute_id}}"
+              ]
             }
           },
           "response": []
@@ -1599,8 +1860,13 @@
             "url": {
               "raw": "{{base_url}}/attributes/{{attribute_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["attributes", "{{attribute_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "attributes",
+                "{{attribute_id}}"
+              ]
             }
           },
           "response": []
@@ -1637,8 +1903,12 @@
             "url": {
               "raw": "{{base_url}}/attribute-groups",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["attribute-groups"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "attribute-groups"
+              ]
             }
           },
           "response": []
@@ -1651,8 +1921,12 @@
             "url": {
               "raw": "{{base_url}}/attribute-groups",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["attribute-groups"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "attribute-groups"
+              ]
             }
           },
           "response": []
@@ -1675,8 +1949,13 @@
             "url": {
               "raw": "{{base_url}}/attribute-groups/{{attribute_group_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["attribute-groups", "{{attribute_group_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "attribute-groups",
+                "{{attribute_group_id}}"
+              ]
             }
           },
           "response": []
@@ -1713,8 +1992,12 @@
             "url": {
               "raw": "{{base_url}}/variants",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["variants"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "variants"
+              ]
             }
           },
           "response": []
@@ -1727,8 +2010,14 @@
             "url": {
               "raw": "{{base_url}}/variants/product/{{product_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["variants", "product", "{{product_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "variants",
+                "product",
+                "{{product_id}}"
+              ]
             }
           },
           "response": []
@@ -1741,8 +2030,13 @@
             "url": {
               "raw": "{{base_url}}/variants/filter?attributes={{attribute_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["variants", "filter"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "variants",
+                "filter"
+              ],
               "query": [
                 {
                   "key": "attributes",
@@ -1780,8 +2074,13 @@
             "url": {
               "raw": "{{base_url}}/variants/{{variant_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["variants", "{{variant_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "variants",
+                "{{variant_id}}"
+              ]
             }
           },
           "response": []
@@ -1824,8 +2123,13 @@
             "url": {
               "raw": "{{base_url}}/product-images/upload",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["product-images", "upload"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-images",
+                "upload"
+              ]
             }
           },
           "response": []
@@ -1838,8 +2142,14 @@
             "url": {
               "raw": "{{base_url}}/product-images/product/{{product_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["product-images", "product", "{{product_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-images",
+                "product",
+                "{{product_id}}"
+              ]
             }
           },
           "response": []
@@ -1862,8 +2172,13 @@
             "url": {
               "raw": "{{base_url}}/product-images/{{image_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["product-images", "{{image_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-images",
+                "{{image_id}}"
+              ]
             }
           },
           "response": []
@@ -1900,8 +2215,13 @@
             },
             "url": {
               "raw": "{{base_url}}/shipment/delivery-staff",
-              "host": ["{{base_url}}"],
-              "path": ["shipment", "delivery-staff"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipment",
+                "delivery-staff"
+              ]
             },
             "description": "Create DeliveryStaff manually. Auto-created when registering with role='shipper'"
           },
@@ -1924,8 +2244,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/shipment/delivery-staff",
-              "host": ["{{base_url}}"],
-              "path": ["shipment", "delivery-staff"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipment",
+                "delivery-staff"
+              ]
             }
           },
           "response": []
@@ -1962,8 +2287,13 @@
             },
             "url": {
               "raw": "{{base_url}}/shipment/assign",
-              "host": ["{{base_url}}"],
-              "path": ["shipment", "assign"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipment",
+                "assign"
+              ]
             }
           },
           "response": []
@@ -1995,8 +2325,13 @@
             },
             "url": {
               "raw": "{{base_url}}/shipment/auto-assign",
-              "host": ["{{base_url}}"],
-              "path": ["shipment", "auto-assign"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipment",
+                "auto-assign"
+              ]
             }
           },
           "response": []
@@ -2028,8 +2363,14 @@
             },
             "url": {
               "raw": "{{base_url}}/shipment/{{shipment_id}}/status",
-              "host": ["{{base_url}}"],
-              "path": ["shipment", "{{shipment_id}}", "status"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipment",
+                "{{shipment_id}}",
+                "status"
+              ]
             }
           },
           "response": []
@@ -2051,8 +2392,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/shipment/{{shipment_id}}/logs",
-              "host": ["{{base_url}}"],
-              "path": ["shipment", "{{shipment_id}}", "logs"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipment",
+                "{{shipment_id}}",
+                "logs"
+              ]
             }
           },
           "response": []
@@ -2074,8 +2421,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/shipment/assigned-orders",
-              "host": ["{{base_url}}"],
-              "path": ["shipment", "assigned-orders"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipment",
+                "assigned-orders"
+              ]
             }
           },
           "response": []
@@ -2109,8 +2461,13 @@
             "url": {
               "raw": "{{base_url}}/admin/users?page=1&limit=10&search=&role=all&status=all&sortBy=createdAt&sortOrder=desc",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -2169,8 +2526,14 @@
             "url": {
               "raw": "{{base_url}}/admin/users/{{user_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users", "{{user_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{user_id}}"
+              ]
             }
           },
           "response": []
@@ -2213,8 +2576,13 @@
             "url": {
               "raw": "{{base_url}}/admin/users",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
             }
           },
           "response": []
@@ -2257,8 +2625,14 @@
             "url": {
               "raw": "{{base_url}}/admin/users/{{user_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users", "{{user_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{user_id}}"
+              ]
             }
           },
           "response": []
@@ -2287,8 +2661,14 @@
             "url": {
               "raw": "{{base_url}}/admin/users/{{user_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users", "{{user_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{user_id}}"
+              ]
             }
           },
           "response": []
@@ -2330,8 +2710,13 @@
             "url": {
               "raw": "{{base_url}}/payment/create-vnpay",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["payment", "create-vnpay"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payment",
+                "create-vnpay"
+              ]
             }
           },
           "response": []
@@ -2344,8 +2729,13 @@
             "url": {
               "raw": "{{base_url}}/payment/vnpay-return?vnp_Amount=1000000&vnp_ResponseCode=00&vnp_TxnRef={{order_id}}",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["payment", "vnpay-return"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payment",
+                "vnpay-return"
+              ],
               "query": [
                 {
                   "key": "vnp_Amount",
@@ -2359,6 +2749,1429 @@
                   "key": "vnp_TxnRef",
                   "value": "{{order_id}}"
                 }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "After Sales - Return & Warranty",
+      "item": [
+        {
+          "name": "List Return Policies",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Active Return Policies",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies?is_active=true",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies"
+              ],
+              "query": [
+                {
+                  "key": "is_active",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Return Policy",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Default 7 Days\",\n  \"description\": \"Apply for unopened products\",\n  \"days_allowed\": 7,\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Return Policy",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Policy Name\",\n  \"days_allowed\": 14,\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies/{{policy_id}}",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies",
+                "{{policy_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Return Policy",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies/{{policy_id}}",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies",
+                "{{policy_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Policy Product Links",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies/product-links",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies",
+                "product-links"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Policy To Product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": \"{{product_id}}\",\n  \"policy_id\": \"{{policy_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies/product-links",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies",
+                "product-links"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Policies By Product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies/product/{{product_id}}",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies",
+                "product",
+                "{{product_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Eligible Return Items",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns/eligible-items",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns",
+                "eligible-items"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Eligible Return Items By Search",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns/eligible-items?search={{order_id}}&page=1&limit=20",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns",
+                "eligible-items"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "{{order_id}}"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Return Request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_item_id\": \"{{order_id}}:0\",\n  \"policy_id\": \"{{policy_id}}\",\n  \"reason\": \"Product has technical issue\",\n  \"refund_amount\": 120000,\n  \"evidence_image\": \"https://example.com/evidence.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Return Requests",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Return Detail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns/{{return_id}}",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns",
+                "{{return_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Return Status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"APPROVED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns/{{return_id}}/status",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns",
+                "{{return_id}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Warranty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_item_id\": \"{{order_id}}:0\",\n  \"warranty_period\": 12,\n  \"description_issue\": \"Power issue\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/warranty",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "warranty"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Warranty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/warranty",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "warranty"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Warranty Status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"EXPIRED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/warranty/{{warranty_id}}/status",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "warranty",
+                "{{warranty_id}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Claim Warranty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description_issue\": \"Product does not power on\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/warranty/{{warranty_id}}/claim",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "warranty",
+                "{{warranty_id}}",
+                "claim"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "After Sales - Test Flow",
+      "item": [
+        {
+          "name": "01 Create Return Policy",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Flow Policy 7 Days\",\n  \"description\": \"Policy for testing end-to-end after sales flow\",\n  \"days_allowed\": 7,\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02 List Return Policies (copy policy_id)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03 Assign Policy To Product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": \"{{product_id}}\",\n  \"policy_id\": \"{{policy_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/return-policies/product-links",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "return-policies",
+                "product-links"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04 List Eligible Return Items (copy order_item_id)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns/eligible-items",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns",
+                "eligible-items"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "05 Create Return Request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_item_id\": \"{{order_id}}:0\",\n  \"policy_id\": \"{{policy_id}}\",\n  \"reason\": \"Flow test - product issue\",\n  \"refund_amount\": 100000,\n  \"evidence_image\": \"https://example.com/flow-test.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06 List Return Requests (copy return_id)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "07 Approve Return Request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"APPROVED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/returns/{{return_id}}/status",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "returns",
+                "{{return_id}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "08 Create Warranty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_item_id\": \"{{order_id}}:0\",\n  \"warranty_period\": 12,\n  \"description_issue\": \"Flow test - initial warranty record\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/warranty",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "warranty"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "09 List Warranty (copy warranty_id)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/warranty",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "warranty"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "10 Claim Warranty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description_issue\": \"Flow test - claimed warranty\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/after-sales/warranty/{{warranty_id}}/claim",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "after-sales",
+                "warranty",
+                "{{warranty_id}}",
+                "claim"
               ]
             }
           },
