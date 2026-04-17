@@ -3,6 +3,7 @@ const ShipmentTrackingLog = require('./shipmentTrackingLog.model')
 const DeliveryStaff = require('./deliveryStaff.model')
 const Order = require('../order/order.model')
 const { User } = require('../auth/auth.model')
+const afterSalesService = require('../afterSales/afterSales.service')
 
 const validStatuses = ['pending', 'assigned', 'in_transit', 'delivered', 'failed', 'cancelled']
 
@@ -207,7 +208,11 @@ const shipmentService = {
     }
 
     const nextOrderStatus = orderStatusMap[status] || shipment.status
-    await Order.findByIdAndUpdate(shipment.order_id, { status: nextOrderStatus })
+    const updatedOrder = await Order.findByIdAndUpdate(shipment.order_id, { status: nextOrderStatus }, { new: true })
+
+    if (nextOrderStatus === 'completed' && updatedOrder) {
+      await afterSalesService.ensureWarrantyForCompletedOrder(updatedOrder._id, updatedOrder.updatedAt || new Date())
+    }
 
     return shipment
   },

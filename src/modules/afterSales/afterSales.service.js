@@ -1,8 +1,10 @@
 const ReturnPolicy = require('./returnPolicy.model')
 const ProductReturnPolicy = require('./productReturnPolicy.model')
 const { ReturnRequest, RETURN_STATUS } = require('./returnRequest.model')
-const { Warranty, WARRANTY_STATUS } = require('./warranty.model')
+const { Warranty } = require('./warranty.model')
 const Order = require('../order/order.model')
+
+const DEFAULT_WARRANTY_PERIOD_MONTHS = Math.max(1, Number(process.env.DEFAULT_WARRANTY_PERIOD_MONTHS) || 12)
 
 const resolveOrderItem = async (orderItemKey) => {
   if (!orderItemKey || typeof orderItemKey !== 'string') {
@@ -36,6 +38,15 @@ const computeWarrantyEndDate = (startDate, warrantyPeriod) => {
   const date = new Date(startDate)
   date.setMonth(date.getMonth() + warrantyPeriod)
   return date
+}
+
+const computeRefundAmount = (order, itemIndex) => {
+  const item = order.items?.[itemIndex]
+  if (!item) {
+    throw new Error('Không tìm thấy order item tương ứng')
+  }
+
+  return Math.max(0, Number(item.price || 0) * Number(item.quantity || 0))
 }
 
 const afterSalesService = {
@@ -102,9 +113,52 @@ const afterSalesService = {
       .sort({ created_at: -1 })
   },
 
+  async ensureWarrantyForCompletedOrder(orderId, completedAt = new Date()) {
+    const order = await Order.findById(orderId)
+    if (!order || order.status !== 'completed' || order.payment_status !== 'paid') {
+      return []
+    }
+
+    const warrantyRecords = []
+
+    for (const [index] of order.items.entries()) {
+      const orderItemId = `${order._id.toString()}:${index}`
+      const existing = await Warranty.findOne({ order_item_id: orderItemId })
+
+      if (existing) {
+        warrantyRecords.push(existing)
+        continue
+      }
+
+      const created = await Warranty.create({
+        order_item_id: orderItemId,
+        warranty_period: DEFAULT_WARRANTY_PERIOD_MONTHS,
+        start_date: completedAt,
+        end_date: computeWarrantyEndDate(completedAt, DEFAULT_WARRANTY_PERIOD_MONTHS),
+        description_issue: ''
+      })
+
+      warrantyRecords.push(created)
+    }
+
+    return warrantyRecords
+  },
+
+  async syncAllCompletedOrderWarranties() {
+    const completedOrders = await Order.find({ status: 'completed', payment_status: 'paid' }).select('_id')
+    const results = []
+
+    for (const order of completedOrders) {
+      const warrantyRecords = await this.ensureWarrantyForCompletedOrder(order._id)
+      results.push(...warrantyRecords)
+    }
+
+    return results
+  },
+
   // Returns
   async createReturn(payload, requesterUserId) {
-    const { order_item_id, policy_id, reason, refund_amount, evidence_image } = payload
+    const { order_item_id, policy_id, reason, evidence_image } = payload
 
     const policy = await ReturnPolicy.findById(policy_id)
     if (!policy || !policy.is_active) {
@@ -112,6 +166,9 @@ const afterSalesService = {
     }
 
     const { order } = await resolveOrderItem(order_item_id)
+    const [, itemIndexRaw] = order_item_id.split(':')
+    const itemIndex = Number(itemIndexRaw)
+    const refundAmount = computeRefundAmount(order, itemIndex)
 
     if (order.status !== 'completed' || order.payment_status !== 'paid') {
       throw new Error('Chỉ cho phép tạo return cho đơn đã hoàn thành và đã thanh toán')
@@ -126,7 +183,7 @@ const afterSalesService = {
       order_item_id,
       policy_id,
       reason,
-      refund_amount: refund_amount || 0,
+      refund_amount: refundAmount,
       evidence_image: evidence_image || '',
       created_by: requesterUserId
     })
@@ -295,6 +352,8 @@ const afterSalesService = {
   },
 
   async listWarranty({ status, page = 1, limit = 10 }) {
+    await this.syncAllCompletedOrderWarranties()
+
     const filter = {}
     if (status && status !== 'all') {
       filter.status = status

@@ -41,6 +41,8 @@ const warrantySchema = new mongoose.Schema(
   { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } }
 )
 
+warrantySchema.index({ order_item_id: 1 }, { unique: true })
+
 module.exports = {
   Warranty: mongoose.model('Warranty', warrantySchema),
   WARRANTY_STATUS
