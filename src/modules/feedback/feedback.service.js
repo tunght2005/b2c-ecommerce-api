@@ -47,6 +47,7 @@ const feedbackService = {
   getUserFeedbacks: async (user_id) => {
     return await Feedback.find({ user_id })
       .populate('order_id', 'final_price status')
+      .populate('product_id', 'name status')
       .populate('assigned_to', 'username')
       .sort({ createdAt: -1 })
   },
@@ -55,6 +56,7 @@ const feedbackService = {
   getFeedbackDetail: async (feedback_id, user_id) => {
     const feedback = await Feedback.findById(feedback_id)
       .populate('order_id', 'final_price status')
+      .populate('product_id', 'name status')
       .populate('assigned_to', 'username')
       .populate('user_id', 'username email')
 
@@ -131,7 +133,7 @@ const feedbackService = {
 
     // Filter out internal notes for non-support users
     if (!isSupport) {
-      return replies.filter(reply => !reply.is_internal)
+      return replies.filter((reply) => !reply.is_internal)
     }
 
     return replies
@@ -223,6 +225,7 @@ const feedbackService = {
 
     const feedbacks = await Feedback.find(query)
       .populate('user_id', 'username email')
+      .populate('product_id', 'name status')
       .populate('assigned_to', 'username')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
@@ -247,8 +250,10 @@ const feedbackService = {
     if (assigned_to) updateData.assigned_to = assigned_to
     if (priority) updateData.priority = priority
 
-    const feedback = await Feedback.findByIdAndUpdate(feedback_id, updateData, { new: true })
-      .populate('assigned_to', 'username')
+    const feedback = await Feedback.findByIdAndUpdate(feedback_id, updateData, { new: true }).populate(
+      'assigned_to',
+      'username'
+    )
 
     if (!feedback) {
       throw new Error('Feedback không tồn tại')
