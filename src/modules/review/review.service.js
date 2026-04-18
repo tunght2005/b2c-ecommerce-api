@@ -48,6 +48,43 @@ const reviewService = {
     }
   },
 
+  getAllReviewsAdmin: async ({ page = 1, limit = 20, product_id, user_id, rating } = {}) => {
+    const currentPage = Math.max(1, Number(page) || 1)
+    const pageSize = Math.max(1, Number(limit) || 20)
+    const skip = (currentPage - 1) * pageSize
+
+    const filter = {}
+    if (product_id && mongoose.Types.ObjectId.isValid(product_id)) {
+      filter.product_id = product_id
+    }
+    if (user_id && mongoose.Types.ObjectId.isValid(user_id)) {
+      filter.user_id = user_id
+    }
+    if (rating) {
+      filter.rating = Number(rating)
+    }
+
+    const [reviews, total] = await Promise.all([
+      Review.find(filter)
+        .populate('user_id', 'username email')
+        .populate('product_id', 'name slug')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(pageSize),
+      Review.countDocuments(filter)
+    ])
+
+    return {
+      reviews,
+      pagination: {
+        page: currentPage,
+        limit: pageSize,
+        total,
+        totalPages: Math.ceil(total / pageSize)
+      }
+    }
+  },
+
   getMyReviews: async (user_id, page = 1, limit = 10) => {
     const skip = (page - 1) * limit
 
@@ -86,6 +123,16 @@ const reviewService = {
 
     if (!deleted) {
       throw new Error('Không tìm thấy review hoặc bạn không có quyền xóa')
+    }
+
+    return { message: 'Đã xóa review thành công' }
+  },
+
+  deleteReviewByAdmin: async (review_id) => {
+    const deleted = await Review.findByIdAndDelete(review_id)
+
+    if (!deleted) {
+      throw new Error('Không tìm thấy review')
     }
 
     return { message: 'Đã xóa review thành công' }

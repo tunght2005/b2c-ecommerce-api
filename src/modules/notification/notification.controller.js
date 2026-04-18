@@ -1,6 +1,27 @@
 const NotificationService = require('./notification.service')
 
 const NotificationController = {
+  create: async (req, res) => {
+    try {
+      const { title, content } = req.body
+
+      if (!title || !title.trim()) {
+        return res.status(400).json({ message: 'Thiếu title' })
+      }
+
+      const notification = await NotificationService.create({
+        userId: req.user.id,
+        title: title.trim(),
+        content: content?.trim() || null
+      })
+
+      res.status(201).json({ message: 'Tạo thông báo thành công', notification })
+    } catch (err) {
+      const status = typeof err.status === 'number' ? err.status : 500
+      res.status(status).json({ message: err.message || 'Lỗi server' })
+    }
+  },
+
   getAll: async (req, res) => {
     try {
       const notifications = await NotificationService.getAll(req.user.id)

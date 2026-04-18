@@ -53,6 +53,15 @@ const reviewController = {
     }
   },
 
+  getAllReviewsAdmin: async (req, res) => {
+    try {
+      const result = await reviewService.getAllReviewsAdmin(req.query)
+      return res.status(200).json({ success: true, data: result })
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message })
+    }
+  },
+
   getMyReviews: async (req, res) => {
     try {
       const user_id = req.user.id
@@ -111,6 +120,22 @@ const reviewController = {
       }
 
       const result = await reviewService.deleteReview({ review_id, user_id })
+
+      return res.status(200).json({ success: true, message: result.message })
+    } catch (error) {
+      return res.status(400).json({ success: false, message: error.message })
+    }
+  },
+
+  deleteReviewByAdmin: async (req, res) => {
+    try {
+      const { id: review_id } = req.params
+
+      if (!mongoose.Types.ObjectId.isValid(review_id)) {
+        return res.status(400).json({ success: false, message: 'review_id không hợp lệ' })
+      }
+
+      const result = await reviewService.deleteReviewByAdmin(review_id)
 
       return res.status(200).json({ success: true, message: result.message })
     } catch (error) {

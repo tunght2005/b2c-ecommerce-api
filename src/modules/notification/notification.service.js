@@ -1,6 +1,10 @@
 const { NotificationModel } = require('./notification.model')
 
 const NotificationService = {
+  create: async ({ userId, title, content }) => {
+    return await NotificationModel.create({ user_id: userId, title, content })
+  },
+
   getAll: async (userId) => {
     return await NotificationModel.findAllByUserId(userId)
   },

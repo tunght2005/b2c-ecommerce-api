@@ -13,6 +13,10 @@ const notificationSchema = new mongoose.Schema(
 const Notification = mongoose.model('Notification', notificationSchema)
 
 const NotificationModel = {
+  create: async ({ user_id, title, content = null }) => {
+    return await Notification.create({ user_id, title, content })
+  },
+
   findAllByUserId: async (userId) => {
     return await Notification.find({ user_id: userId }).sort({ createdAt: -1 })
   },
