@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "b2c-ecommerce-complete-collection",
     "name": "B2C E-Commerce Complete API Collection",
-    "description": "Tổng hợp toàn bộ API collections cho B2C E-Commerce Backend - gồm Auth, User, Cart, Order, Payment, Voucher, Promotion, Feedback, Chatbot, Review, Wishlist, Brand, Category, Product, Attribute, Variant, Product Image",
+    "description": "Tổng hợp toàn bộ API collections cho B2C E-Commerce Backend - gồm Auth, User, Address, Notification, Cart, Order, Payment, Voucher, Promotion, Banner, Feedback, Chatbot, Review, Wishlist, Brand, Category, Product, Attribute, Variant, Product Image, Shipment, Admin Users, After Sales",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "combined"
   },
@@ -489,6 +489,123 @@
               "protocol": "http",
               "host": ["{{base_url}}"],
               "path": ["notification"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Notification",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Thông báo hệ thống\",\n  \"content\": \"Nội dung thông báo dành cho user\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/notification",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["notification"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Broadcast Notification To All Users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Banner mới vừa ra mắt\",\n  \"content\": \"Khám phá banner marketing mới nhất trên trang chủ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/notification/broadcast/all-users",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["notification", "broadcast", "all-users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Broadcast Notification To Customers",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Ưu đãi cho customer\",\n  \"content\": \"Thông báo marketing dành cho khách hàng\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/notification/broadcast/customers",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["notification", "broadcast", "customers"]
             }
           },
           "response": []
@@ -1004,6 +1121,196 @@
               "protocol": "http",
               "host": ["{{base_url}}"],
               "path": ["promotions", "best", "{{product_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Banners",
+      "item": [
+        {
+          "name": "List Banners",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/banners",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["banners"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Banner Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/banners/{{banner_id}}",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["banners", "{{banner_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Banner",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Banner khuyến mãi tháng 4",
+                  "type": "text"
+                },
+                {
+                  "key": "link",
+                  "value": "/products",
+                  "type": "text"
+                },
+                {
+                  "key": "position",
+                  "value": "top",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/banners",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["banners"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Banner",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Banner cập nhật",
+                  "type": "text"
+                },
+                {
+                  "key": "link",
+                  "value": "/collections",
+                  "type": "text"
+                },
+                {
+                  "key": "position",
+                  "value": "middle",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/banners/{{banner_id}}",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["banners", "{{banner_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Banner",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/banners/{{banner_id}}",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["banners", "{{banner_id}}"]
             }
           },
           "response": []

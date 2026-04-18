@@ -1,10 +1,14 @@
 const ReturnPolicy = require('./returnPolicy.model')
 const ProductReturnPolicy = require('./productReturnPolicy.model')
 const { ReturnRequest, RETURN_STATUS } = require('./returnRequest.model')
-const { Warranty } = require('./warranty.model')
+const { Warranty, WARRANTY_STATUS } = require('./warranty.model')
 const Order = require('../order/order.model')
 
 const DEFAULT_WARRANTY_PERIOD_MONTHS = Math.max(1, Number(process.env.DEFAULT_WARRANTY_PERIOD_MONTHS) || 12)
+
+const isPrivilegedRole = (role) => ['admin', 'support'].includes(role)
+
+const escapeRegExp = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
 const resolveOrderItem = async (orderItemKey) => {
   if (!orderItemKey || typeof orderItemKey !== 'string') {
@@ -32,6 +36,30 @@ const resolveOrderItem = async (orderItemKey) => {
   }
 
   return { order, item }
+}
+
+const ensureOrderOwnership = (order, requesterUserId, role) => {
+  if (isPrivilegedRole(role)) return
+
+  if (!requesterUserId) {
+    throw new Error('Thiếu thông tin người dùng')
+  }
+
+  const ownerId = order.user_id?.toString?.() || ''
+  if (ownerId !== String(requesterUserId)) {
+    throw new Error('Bạn chỉ có thể thao tác với đơn hàng của chính mình')
+  }
+}
+
+const buildOrderItemIdFilterByOwner = async (requesterUserId) => {
+  const ownedOrders = await Order.find({ user_id: requesterUserId }).select('_id').lean()
+  if (!ownedOrders.length) {
+    return { $in: [] }
+  }
+
+  return {
+    $in: ownedOrders.map((order) => new RegExp(`^${escapeRegExp(order._id.toString())}:`))
+  }
 }
 
 const computeWarrantyEndDate = (startDate, warrantyPeriod) => {
@@ -166,6 +194,7 @@ const afterSalesService = {
     }
 
     const { order } = await resolveOrderItem(order_item_id)
+    ensureOrderOwnership(order, requesterUserId, 'customer')
     const [, itemIndexRaw] = order_item_id.split(':')
     const itemIndex = Number(itemIndexRaw)
     const refundAmount = computeRefundAmount(order, itemIndex)
@@ -193,10 +222,14 @@ const afterSalesService = {
       .populate('created_by', 'username email role')
   },
 
-  async listReturns({ status, page = 1, limit = 10 }) {
+  async listReturns({ status, page = 1, limit = 10, role, requesterUserId }) {
     const filter = {}
     if (status && status !== 'all') {
       filter.status = status
+    }
+
+    if (!isPrivilegedRole(role)) {
+      filter.created_by = requesterUserId
     }
 
     const normalizedLimit = Math.max(1, Math.min(Number(limit) || 10, 100))
@@ -223,13 +256,18 @@ const afterSalesService = {
     }
   },
 
-  async getReturnDetail(id) {
+  async getReturnDetail(id, { role, requesterUserId } = {}) {
     const request = await ReturnRequest.findById(id)
       .populate('policy_id', 'name description days_allowed is_active')
       .populate('created_by', 'username email role')
 
     if (!request) {
       throw new Error('Không tìm thấy return request')
+    }
+
+    if (!isPrivilegedRole(role)) {
+      const { order } = await resolveOrderItem(request.order_item_id)
+      ensureOrderOwnership(order, requesterUserId, role)
     }
 
     return request
@@ -256,13 +294,17 @@ const afterSalesService = {
     return request
   },
 
-  async listEligibleOrderItems({ search = '', page = 1, limit = 20 }) {
+  async listEligibleOrderItems({ search = '', page = 1, limit = 20, role, requesterUserId }) {
     const normalizedLimit = Math.max(1, Math.min(Number(limit) || 20, 100))
     const normalizedPage = Math.max(1, Number(page) || 1)
 
     const orderFilter = {
       status: 'completed',
       payment_status: 'paid'
+    }
+
+    if (!isPrivilegedRole(role)) {
+      orderFilter.user_id = requesterUserId
     }
 
     const orders = await Order.find(orderFilter)
@@ -332,10 +374,11 @@ const afterSalesService = {
   },
 
   // Warranty
-  async createWarranty(payload) {
+  async createWarranty(payload, { role, requesterUserId } = {}) {
     const { order_item_id, warranty_period, start_date, description_issue } = payload
 
-    await resolveOrderItem(order_item_id)
+    const { order } = await resolveOrderItem(order_item_id)
+    ensureOrderOwnership(order, requesterUserId, role)
 
     const startDate = start_date ? new Date(start_date) : new Date()
     const period = Number(warranty_period) || 12
@@ -351,12 +394,16 @@ const afterSalesService = {
     return record
   },
 
-  async listWarranty({ status, page = 1, limit = 10 }) {
+  async listWarranty({ status, page = 1, limit = 10, role, requesterUserId }) {
     await this.syncAllCompletedOrderWarranties()
 
     const filter = {}
     if (status && status !== 'all') {
       filter.status = status
+    }
+
+    if (!isPrivilegedRole(role)) {
+      filter.order_item_id = await buildOrderItemIdFilterByOwner(requesterUserId)
     }
 
     const normalizedLimit = Math.max(1, Math.min(Number(limit) || 10, 100))
@@ -394,10 +441,15 @@ const afterSalesService = {
     return record
   },
 
-  async claimWarranty(id, description_issue) {
+  async claimWarranty(id, description_issue, { role, requesterUserId } = {}) {
     const record = await Warranty.findById(id)
     if (!record) {
       throw new Error('Không tìm thấy warranty')
+    }
+
+    if (!isPrivilegedRole(role)) {
+      const { order } = await resolveOrderItem(record.order_item_id)
+      ensureOrderOwnership(order, requesterUserId, role)
     }
 
     record.claim_count += 1

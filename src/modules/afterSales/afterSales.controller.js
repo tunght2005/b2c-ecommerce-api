@@ -89,7 +89,9 @@ const afterSalesController = {
       const result = await afterSalesService.listReturns({
         status: req.query.status,
         page: parseInt(req.query.page) || 1,
-        limit: parseInt(req.query.limit) || 10
+        limit: parseInt(req.query.limit) || 10,
+        role: req.user.role,
+        requesterUserId: req.user.id
       })
       res.status(200).json({ success: true, data: result })
     } catch (error) {
@@ -99,7 +101,10 @@ const afterSalesController = {
 
   async getReturnDetail(req, res) {
     try {
-      const request = await afterSalesService.getReturnDetail(req.params.id)
+      const request = await afterSalesService.getReturnDetail(req.params.id, {
+        role: req.user.role,
+        requesterUserId: req.user.id
+      })
       res.status(200).json({ success: true, data: request })
     } catch (error) {
       res.status(404).json({ success: false, message: error.message })
@@ -120,7 +125,9 @@ const afterSalesController = {
       const result = await afterSalesService.listEligibleOrderItems({
         search: req.query.search || '',
         page: parseInt(req.query.page) || 1,
-        limit: parseInt(req.query.limit) || 20
+        limit: parseInt(req.query.limit) || 20,
+        role: req.user.role,
+        requesterUserId: req.user.id
       })
       res.status(200).json({ success: true, data: result })
     } catch (error) {
@@ -131,7 +138,10 @@ const afterSalesController = {
   // Warranty
   async createWarranty(req, res) {
     try {
-      const warranty = await afterSalesService.createWarranty(req.body)
+      const warranty = await afterSalesService.createWarranty(req.body, {
+        role: req.user.role,
+        requesterUserId: req.user.id
+      })
       res.status(201).json({ success: true, data: warranty })
     } catch (error) {
       res.status(400).json({ success: false, message: error.message })
@@ -143,7 +153,9 @@ const afterSalesController = {
       const result = await afterSalesService.listWarranty({
         status: req.query.status,
         page: parseInt(req.query.page) || 1,
-        limit: parseInt(req.query.limit) || 10
+        limit: parseInt(req.query.limit) || 10,
+        role: req.user.role,
+        requesterUserId: req.user.id
       })
       res.status(200).json({ success: true, data: result })
     } catch (error) {
@@ -162,7 +174,10 @@ const afterSalesController = {
 
   async claimWarranty(req, res) {
     try {
-      const warranty = await afterSalesService.claimWarranty(req.params.id, req.body.description_issue)
+      const warranty = await afterSalesService.claimWarranty(req.params.id, req.body.description_issue, {
+        role: req.user.role,
+        requesterUserId: req.user.id
+      })
       res.status(200).json({ success: true, data: warranty })
     } catch (error) {
       res.status(400).json({ success: false, message: error.message })
