@@ -17,6 +17,18 @@ const NotificationModel = {
     return await Notification.create({ user_id, title, content })
   },
 
+  createMany: async ({ userIds, title, content = null }) => {
+    if (!Array.isArray(userIds) || userIds.length === 0) return []
+
+    const docs = userIds.map((userId) => ({
+      user_id: userId,
+      title,
+      content
+    }))
+
+    return await Notification.insertMany(docs, { ordered: false })
+  },
+
   findAllByUserId: async (userId) => {
     return await Notification.find({ user_id: userId }).sort({ createdAt: -1 })
   },

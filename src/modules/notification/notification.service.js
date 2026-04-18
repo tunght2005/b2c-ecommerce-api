@@ -1,4 +1,5 @@
 const { NotificationModel } = require('./notification.model')
+const { User } = require('../auth/auth.model')
 
 const NotificationService = {
   create: async ({ userId, title, content }) => {
@@ -26,6 +27,17 @@ const NotificationService = {
 
   markAllAsRead: async (userId) => {
     await NotificationModel.markAllAsRead(userId)
+  },
+
+  notifyAllActiveCustomers: async ({ title, content }) => {
+    const customers = await User.find({ role: 'customer', status: 'active' }).select('_id')
+    const customerIds = customers.map((item) => item._id)
+
+    return await NotificationModel.createMany({
+      userIds: customerIds,
+      title,
+      content
+    })
   }
 }
 

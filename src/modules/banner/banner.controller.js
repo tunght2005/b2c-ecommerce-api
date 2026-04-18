@@ -1,5 +1,4 @@
 const BannerService = require('./banner.service')
-const NotificationModel = require('../notification/notification.model')
 
 exports.list = async (req, res) => {
   try {
@@ -37,20 +36,6 @@ exports.create = async (req, res) => {
       link,
       position
     })
-
-    // Create notification
-    if (req.user && req.user.id) {
-      try {
-        await NotificationModel.create({
-          user_id: req.user.id,
-          title: 'Tạo banner mới',
-          content: `Banner "${title}" đã được tạo thành công`
-        })
-      } catch (notifError) {
-        console.error('Error creating notification:', notifError)
-        // Không throw lỗi, vì banner đã tạo thành công
-      }
-    }
 
     res.status(201).json({
       success: true,

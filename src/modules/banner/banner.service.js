@@ -1,5 +1,4 @@
 const Banner = require('./banner.model')
-const Notification = require('../notification/notification.model')
 
 exports.list = async ({ page = 1, limit = 10, position = null, is_active = null }) => {
   const query = {}
