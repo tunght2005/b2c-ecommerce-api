@@ -1,42 +1,97 @@
 const { NotificationModel } = require('./notification.model')
+const { NotificationReadModel } = require('./notification-read.model')
 const { User } = require('../auth/auth.model')
 
 const NotificationService = {
-  create: async ({ userId, title, content }) => {
-    return await NotificationModel.create({ user_id: userId, title, content })
+  create: async ({ userId, title, content, createdBy = null, category = 'system' }) => {
+    return await NotificationModel.createPersonal({
+      user_id: userId,
+      title,
+      content,
+      category,
+      created_by: createdBy
+    })
   },
 
-  getAll: async (userId) => {
-    return await NotificationModel.findAllByUserId(userId)
+  broadcastAllUsers: async ({ title, content, createdBy = null, category = 'marketing' }) => {
+    const notification = await NotificationModel.createGlobal({
+      title,
+      content,
+      category,
+      created_by: createdBy
+    })
+
+    const totalRecipients = await User.countDocuments({ status: 'active' })
+
+    return {
+      notification,
+      totalRecipients
+    }
   },
 
-  markAsRead: async (userId, id) => {
+  getAll: async ({ userId, role }) => {
+    const notifications = await NotificationModel.findVisibleByUser({ userId, role })
+    const notificationIds = notifications.map((item) => item._id)
+    const readIds = await NotificationReadModel.findReadNotificationIds({ userId, notificationIds })
+    const readSet = new Set(readIds)
+
+    return notifications.map((item) => {
+      const raw = item.toObject()
+
+      return {
+        ...raw,
+        is_read: readSet.has(raw._id.toString())
+      }
+    })
+  },
+
+  markAsRead: async ({ userId, role, id }) => {
     const notif = await NotificationModel.findById(id)
     if (!notif) {
       const err = new Error('Thông báo không tồn tại')
       err.status = 404
       throw err
     }
-    if (notif.user_id.toString() !== userId.toString()) {
+
+    const isStaff = ['admin', 'support'].includes(role)
+    const isOwner = notif.user_id && notif.user_id.toString() === userId.toString()
+    const isGlobal = notif.type === 'global'
+
+    if (!isStaff && !isGlobal && !isOwner) {
       const err = new Error('Không có quyền')
       err.status = 403
       throw err
     }
-    return await NotificationModel.markAsRead(id, userId)
+
+    await NotificationReadModel.upsertRead({ userId, notificationId: id })
+
+    const raw = notif.toObject()
+    return {
+      ...raw,
+      is_read: true
+    }
   },
 
-  markAllAsRead: async (userId) => {
-    await NotificationModel.markAllAsRead(userId)
+  markAllAsRead: async ({ userId, role }) => {
+    const notificationIds = await NotificationModel.findVisibleIdsByUser({ userId, role })
+    const insertedCount = await NotificationReadModel.bulkMarkAsRead({ userId, notificationIds })
+
+    return {
+      insertedCount,
+      total: notificationIds.length
+    }
   },
 
-  notifyAllActiveCustomers: async ({ title, content }) => {
-    const customers = await User.find({ role: 'customer', status: 'active' }).select('_id')
-    const customerIds = customers.map((item) => item._id)
+  notifyMarketingBanner: async ({ bannerTitle, bannerLink = null, createdBy = null }) => {
+    const title = 'Thong bao khuyen mai moi'
+    const linkPart = bannerLink ? ` Xem ngay: ${bannerLink}` : ''
+    const content = `Banner ${bannerTitle} da duoc cap nhat.${linkPart}`
 
-    return await NotificationModel.createMany({
-      userIds: customerIds,
+    return await NotificationService.broadcastAllUsers({
       title,
-      content
+      content,
+      createdBy,
+      category: 'marketing'
     })
   }
 }

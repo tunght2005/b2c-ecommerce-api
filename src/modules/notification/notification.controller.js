@@ -1,7 +1,7 @@
 const NotificationService = require('./notification.service')
 
 const NotificationController = {
-  createForCustomers: async (req, res) => {
+  createBroadcastAll: async (req, res) => {
     try {
       const { title, content } = req.body
 
@@ -9,14 +9,17 @@ const NotificationController = {
         return res.status(400).json({ message: 'Thiếu title' })
       }
 
-      const notifications = await NotificationService.notifyAllActiveCustomers({
+      const result = await NotificationService.broadcastAllUsers({
         title: title.trim(),
-        content: content?.trim() || null
+        content: content?.trim() || null,
+        createdBy: req.user.id,
+        category: 'marketing'
       })
 
       res.status(201).json({
-        message: 'Đã gửi thông báo đến customer',
-        total: notifications.length
+        message: 'Đã gửi thông báo đến toàn bộ user',
+        total: result.totalRecipients,
+        notification: result.notification
       })
     } catch (err) {
       const status = typeof err.status === 'number' ? err.status : 500
@@ -35,7 +38,9 @@ const NotificationController = {
       const notification = await NotificationService.create({
         userId: req.user.id,
         title: title.trim(),
-        content: content?.trim() || null
+        content: content?.trim() || null,
+        createdBy: req.user.id,
+        category: 'system'
       })
 
       res.status(201).json({ message: 'Tạo thông báo thành công', notification })
@@ -47,7 +52,10 @@ const NotificationController = {
 
   getAll: async (req, res) => {
     try {
-      const notifications = await NotificationService.getAll(req.user.id)
+      const notifications = await NotificationService.getAll({
+        userId: req.user.id,
+        role: req.user.role
+      })
       res.json({ notifications })
     } catch (err) {
       const status = typeof err.status === 'number' ? err.status : 500
@@ -57,7 +65,11 @@ const NotificationController = {
 
   markAsRead: async (req, res) => {
     try {
-      const notif = await NotificationService.markAsRead(req.user.id, req.params.id)
+      const notif = await NotificationService.markAsRead({
+        userId: req.user.id,
+        role: req.user.role,
+        id: req.params.id
+      })
       res.json({ message: 'Đã đánh dấu đã đọc', notification: notif })
     } catch (err) {
       const status = typeof err.status === 'number' ? err.status : 500
@@ -67,8 +79,15 @@ const NotificationController = {
 
   markAllAsRead: async (req, res) => {
     try {
-      await NotificationService.markAllAsRead(req.user.id)
-      res.json({ message: 'Đã đánh dấu tất cả đã đọc' })
+      const result = await NotificationService.markAllAsRead({
+        userId: req.user.id,
+        role: req.user.role
+      })
+      res.json({
+        message: 'Đã đánh dấu tất cả đã đọc',
+        total: result.total,
+        updated: result.insertedCount
+      })
     } catch (err) {
       const status = typeof err.status === 'number' ? err.status : 500
       res.status(status).json({ message: err.message || 'Lỗi server' })

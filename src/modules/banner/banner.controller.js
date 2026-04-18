@@ -1,4 +1,5 @@
 const BannerService = require('./banner.service')
+const NotificationService = require('../notification/notification.service')
 
 exports.list = async (req, res) => {
   try {
@@ -36,6 +37,18 @@ exports.create = async (req, res) => {
       link,
       position
     })
+
+    if (banner.is_active) {
+      try {
+        await NotificationService.notifyMarketingBanner({
+          bannerTitle: banner.title,
+          bannerLink: banner.link,
+          createdBy: req.user.id
+        })
+      } catch (notifError) {
+        console.error('Error creating marketing notification for banner:', notifError)
+      }
+    }
 
     res.status(201).json({
       success: true,
