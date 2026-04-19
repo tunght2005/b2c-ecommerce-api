@@ -7,7 +7,9 @@ const app = express()
 const allowedOrigins = [
   /^http:\/\/localhost:\d+$/,
   /^https:\/\/.+\.onrender\.com$/,
-  /^https:\/\/b2c-fe-admin\.onrender\.com$/
+  /^https:\/\/b2c-fe-admin\.onrender\.com$/,
+  /^https:\/\/.+\.vercel\.app$/,
+  /^https:\/\/b2c-ecommerce-admin\.vercel\.app$/
 ]
 
 app.use((req, res, next) => {
