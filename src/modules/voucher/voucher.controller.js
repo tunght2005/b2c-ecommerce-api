@@ -23,7 +23,7 @@ const voucherController = {
 
   listVouchers: async (req, res) => {
     try {
-      const data = await voucherService.listVouchers(req.query)
+      const data = await voucherService.listVouchers(req.query, req.user?.role)
       return res.status(200).json({
         success: true,
         message: 'Lấy danh sách voucher thành công',

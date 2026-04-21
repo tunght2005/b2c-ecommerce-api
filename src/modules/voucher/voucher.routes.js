@@ -6,7 +6,7 @@ const requireRole = require('../../middlewares/role.middleware')
 
 // [QUAN TRỌNG] Route cho Admin tạo mã (Chính là route đang bị lỗi Cannot POST)
 router.post('/create', authMiddleware, requireRole('admin'), voucherController.createVoucher)
-router.get('/', authMiddleware, requireRole('admin', 'support'), voucherController.listVouchers)
+router.get('/', authMiddleware, requireRole('admin', 'support', 'customer'), voucherController.listVouchers)
 router.put('/:id', authMiddleware, requireRole('admin'), voucherController.updateVoucher)
 router.delete('/:id', authMiddleware, requireRole('admin'), voucherController.deleteVoucher)
 

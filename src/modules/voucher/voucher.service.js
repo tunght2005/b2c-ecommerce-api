@@ -10,13 +10,19 @@ const voucherService = {
     return newVoucher
   },
 
-  listVouchers: async ({ page = 1, limit = 20, status, code } = {}) => {
+  listVouchers: async ({ page = 1, limit = 20, status, code } = {}, requesterRole) => {
     const currentPage = Math.max(1, Number(page) || 1)
     const pageSize = Math.max(1, Number(limit) || 20)
     const skip = (currentPage - 1) * pageSize
 
     const filter = {}
-    if (status && status !== 'all') {
+    if (requesterRole === 'customer') {
+      const now = new Date()
+      filter.status = 'active'
+      filter.start_date = { $lte: now }
+      filter.end_date = { $gte: now }
+      filter.$expr = { $lt: ['$used_count', '$quantity'] }
+    } else if (status && status !== 'all') {
       filter.status = status
     }
     if (code) {
