@@ -3,6 +3,7 @@ const Cart = require('../cart/cart.model')
 const Voucher = require('../voucher/voucher.model')
 const Shipment = require('../shipment/shipment.model')
 const DeliveryStaff = require('../shipment/deliveryStaff.model')
+const Variant = require('../variant/variant.model')
 const voucherService = require('../voucher/voucher.service') // NHÚNG THÊM ĐỂ TÍNH TIỀN
 
 const orderService = {
@@ -21,6 +22,14 @@ const orderService = {
     // Tính tổng tiền và chuẩn bị mảng items cho đơn hàng
     let total_price = 0
     const orderItems = cart.items.map((item) => {
+      if (!item.variant_id) {
+        throw new Error('Sản phẩm trong giỏ hàng không hợp lệ')
+      }
+
+      if (Number(item.quantity) <= 0) {
+        throw new Error('Số lượng sản phẩm trong giỏ hàng không hợp lệ')
+      }
+
       const variantPrice = item.variant_id.price || 0
       total_price += variantPrice * item.quantity
 
@@ -46,32 +55,73 @@ const orderService = {
 
     const final_price = total_price - discount_price
 
-    // Tạo Document Order mới
-    const newOrder = new Order({
-      user_id,
-      address_id,
-      items: orderItems,
-      total_price,
-      discount_price,
-      voucher_id,
-      final_price
-    })
+    const deductedItems = []
+    let orderCreated = false
 
-    // Lưu đơn hàng vào database
-    await newOrder.save()
+    try {
+      // Trừ kho ngay khi tạo đơn, kèm điều kiện để không thể âm kho.
+      for (const item of orderItems) {
+        const updatedVariant = await Variant.findOneAndUpdate(
+          {
+            _id: item.variant_id,
+            stock: { $gte: item.quantity }
+          },
+          {
+            $inc: { stock: -item.quantity }
+          },
+          { new: true }
+        )
 
-    // Tăng số lượt sử dụng voucher lên 1
-    if (voucher_id) {
-      await Voucher.findByIdAndUpdate(voucher_id, {
-        $inc: { used_count: 1 }
+        if (!updatedVariant) {
+          const currentVariant = await Variant.findById(item.variant_id).select('sku stock')
+          const availableStock = Number(currentVariant?.stock) || 0
+          const sku = currentVariant?.sku || item.variant_id
+          throw new Error(`Số lượng đặt vượt quá kho. SKU ${sku} chỉ còn ${availableStock}`)
+        }
+
+        deductedItems.push({ variant_id: item.variant_id, quantity: item.quantity })
+      }
+
+      // Tạo Document Order mới
+      const newOrder = new Order({
+        user_id,
+        address_id,
+        items: orderItems,
+        total_price,
+        discount_price,
+        voucher_id,
+        final_price
       })
+
+      // Lưu đơn hàng vào database
+      await newOrder.save()
+      orderCreated = true
+
+      // Tăng số lượt sử dụng voucher lên 1
+      if (voucher_id) {
+        await Voucher.findByIdAndUpdate(voucher_id, {
+          $inc: { used_count: 1 }
+        })
+      }
+
+      // Đặt hàng thành công thì dọn sạch giỏ hàng
+      cart.items = []
+      await cart.save()
+
+      return newOrder
+    } catch (error) {
+      if (!orderCreated && deductedItems.length > 0) {
+        await Promise.all(
+          deductedItems.map((item) =>
+            Variant.findByIdAndUpdate(item.variant_id, {
+              $inc: { stock: item.quantity }
+            })
+          )
+        )
+      }
+
+      throw error
     }
-
-    // Đặt hàng thành công thì dọn sạch giỏ hàng
-    cart.items = []
-    await cart.save()
-
-    return newOrder
   },
 
   // 2. Lấy danh sách lịch sử đơn hàng của 1 user
@@ -130,6 +180,15 @@ const orderService = {
     if (order.status !== 'pending' && order.status !== 'confirmed') {
       throw new Error(`Đơn hàng đang ở trạng thái '${order.status}', không thể hủy`)
     }
+
+    // Hoàn kho cho tất cả sản phẩm trong đơn trước khi hủy đơn.
+    await Promise.all(
+      order.items.map((item) =>
+        Variant.findByIdAndUpdate(item.variant_id, {
+          $inc: { stock: Number(item.quantity) || 0 }
+        })
+      )
+    )
 
     // Cập nhật trạng thái thành 'cancelled'
     order.status = 'cancelled'
