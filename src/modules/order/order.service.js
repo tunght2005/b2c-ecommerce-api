@@ -5,6 +5,7 @@ const Shipment = require('../shipment/shipment.model')
 const DeliveryStaff = require('../shipment/deliveryStaff.model')
 const Variant = require('../variant/variant.model')
 const voucherService = require('../voucher/voucher.service') // NHÚNG THÊM ĐỂ TÍNH TIỀN
+const promotionService = require('../promotion/promotion.service')
 
 const orderService = {
   // 1. Tạo đơn hàng mới từ Giỏ hàng (Đã bỏ tham số discount_price)
@@ -21,7 +22,10 @@ const orderService = {
 
     // Tính tổng tiền và chuẩn bị mảng items cho đơn hàng
     let total_price = 0
-    const orderItems = cart.items.map((item) => {
+    let promotion_discount_price = 0
+    const orderItems = []
+
+    for (const item of cart.items) {
       if (!item.variant_id) {
         throw new Error('Sản phẩm trong giỏ hàng không hợp lệ')
       }
@@ -33,15 +37,27 @@ const orderService = {
       const variantPrice = item.variant_id.price || 0
       total_price += variantPrice * item.quantity
 
-      return {
+      // Áp promotion theo từng variant (nếu có)
+      try {
+        const bestPromotion = await promotionService.getBestPromotionByVariant(item.variant_id._id)
+        if (bestPromotion && typeof bestPromotion.final_price === 'number') {
+          const promoUnitPrice = Math.max(0, Number(bestPromotion.final_price) || 0)
+          const unitDiscount = Math.max(0, variantPrice - promoUnitPrice)
+          promotion_discount_price += unitDiscount * item.quantity
+        }
+      } catch {
+        // Không có promo hoặc promo lỗi -> bỏ qua, giữ giá gốc
+      }
+
+      orderItems.push({
         variant_id: item.variant_id._id,
         price: variantPrice, // Chốt giá ngay tại thời điểm mua
         quantity: item.quantity
-      }
-    })
+      })
+    }
 
     // BẮT ĐẦU TÍNH TOÁN TIỀN GIẢM GIÁ TẠI BACKEND
-    let discount_price = 0
+    let voucher_discount_price = 0
     if (voucher_id) {
       const voucher = await Voucher.findById(voucher_id)
       if (!voucher) {
@@ -49,10 +65,12 @@ const orderService = {
       }
 
       // Tận dụng lại hàm calculateDiscount để check hạn sử dụng, lượt dùng, đơn tối thiểu...
-      const discountResult = await voucherService.calculateDiscount(voucher.code, total_price)
-      discount_price = discountResult.discount_amount
+      const voucherBase = Math.max(0, total_price - promotion_discount_price)
+      const discountResult = await voucherService.calculateDiscount(voucher.code, voucherBase)
+      voucher_discount_price = discountResult.discount_amount
     }
 
+    const discount_price = promotion_discount_price + voucher_discount_price
     const final_price = total_price - discount_price
 
     const deductedItems = []
