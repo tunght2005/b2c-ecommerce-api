@@ -6,7 +6,11 @@ const cartService = {
   getCartByUserId: async (user_id) => {
     return await Cart.findOne({ user_id }).populate({
       path: 'items.variant_id',
-      model: 'Variant' // Ép nhận diện model Variant
+      model: 'Variant', // Ép nhận diện model Variant
+      populate: {
+        path: 'product_id',
+        model: 'Product'
+      }
     })
   },
 
@@ -66,7 +70,11 @@ const cartService = {
     // TÌM LẠI VÀ POPULATE TRƯỚC KHI TRẢ VỀ CHO FE
     return await Cart.findOne({ user_id }).populate({
       path: 'items.variant_id',
-      model: 'Variant' // Ép nhận diện model Variant
+      model: 'Variant', // Ép nhận diện model Variant
+      populate: {
+        path: 'product_id',
+        model: 'Product'
+      }
     })
   },
 
@@ -79,7 +87,11 @@ const cartService = {
       { new: true } // Trả về document sau khi đã xóa xong
     ).populate({
       path: 'items.variant_id',
-      model: 'Variant' // Nhúng data variant luôn ngay lúc trả về
+      model: 'Variant', // Nhúng data variant luôn ngay lúc trả về
+      populate: {
+        path: 'product_id',
+        model: 'Product'
+      }
     })
 
     if (!cart) {
@@ -133,7 +145,11 @@ const cartService = {
     // Tìm lại và populate để trả dữ liệu đầy đủ về cho Frontend
     return await Cart.findOne({ user_id }).populate({
       path: 'items.variant_id',
-      model: 'Variant'
+      model: 'Variant',
+      populate: {
+        path: 'product_id',
+        model: 'Product'
+      }
     })
   }
 }
