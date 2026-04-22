@@ -62,34 +62,20 @@ const paymentController = {
             status: 'confirmed' // Chuyển sang 'Đang xử lý' hoặc 'confirmed' tùy bạn đặt
           })
 
-          return res.redirect(buildOrdersRedirectUrl('success', orderId))
+          return res.send("Thanh toán thành công và đã cập nhật trạng thái 'paid' trong Database!")
         } else {
           // THANH TOÁN THẤT BẠI
           await Payment.findOneAndUpdate({ order_id: orderId }, { status: 'failed' })
-          return res.redirect(buildOrdersRedirectUrl('failed', orderId))
+          return res.send('Thanh toán thất bại hoặc khách đã hủy giao dịch.')
         }
       } else {
-        return res.redirect(buildOrdersRedirectUrl('invalid_signature', null))
+        return res.status(400).send('Sai chữ ký bảo mật! Dữ liệu có thể đã bị can thiệp.')
       }
     } catch (error) {
       console.error('Lỗi xử lý vnpayReturn:', error)
-      return res.redirect(buildOrdersRedirectUrl('error', null))
+      res.status(500).send('Lỗi hệ thống')
     }
   }
-}
-
-function buildOrdersRedirectUrl(paymentStatus, orderId) {
-  const frontendBaseUrl = process.env.FRONTEND_WEB_URL || 'http://localhost:5173'
-  const ordersPath = process.env.FRONTEND_ORDERS_PATH || '/orders'
-  const normalizedBase = frontendBaseUrl.endsWith('/') ? frontendBaseUrl.slice(0, -1) : frontendBaseUrl
-  const normalizedPath = ordersPath.startsWith('/') ? ordersPath : `/${ordersPath}`
-  const query = new URLSearchParams({ paymentStatus })
-
-  if (orderId) {
-    query.set('orderId', String(orderId))
-  }
-
-  return `${normalizedBase}${normalizedPath}?${query.toString()}`
 }
 
 // HÀM SẮP XẾP CHUẨN (Đã fix triệt để lỗi hasOwnProperty)
