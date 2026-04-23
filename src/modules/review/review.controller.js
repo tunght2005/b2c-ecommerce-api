@@ -141,6 +141,38 @@ const reviewController = {
     } catch (error) {
       return res.status(400).json({ success: false, message: error.message })
     }
+  },
+
+  replyReviewByAdmin: async (req, res) => {
+    try {
+      const { id: review_id } = req.params
+      const { content } = req.body
+      const user_id = req.user.id
+      const role = req.user.role
+
+      if (!mongoose.Types.ObjectId.isValid(review_id)) {
+        return res.status(400).json({ success: false, message: 'review_id không hợp lệ' })
+      }
+
+      if (!content || !content.trim()) {
+        return res.status(400).json({ success: false, message: 'Nội dung phản hồi là bắt buộc' })
+      }
+
+      const review = await reviewService.replyReviewByAdmin({
+        review_id,
+        user_id,
+        role,
+        content
+      })
+
+      return res.status(200).json({
+        success: true,
+        message: 'Đã phản hồi review thành công',
+        data: review
+      })
+    } catch (error) {
+      return res.status(400).json({ success: false, message: error.message })
+    }
   }
 }
 

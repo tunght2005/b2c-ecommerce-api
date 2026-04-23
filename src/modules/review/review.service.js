@@ -16,7 +16,12 @@ const reviewService = {
     const skip = (page - 1) * limit
 
     const [reviews, total] = await Promise.all([
-      Review.find({ product_id }).populate('user_id', 'username email').sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Review.find({ product_id })
+        .populate('user_id', 'username email')
+        .populate('admin_reply.user_id', 'username role')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
       Review.countDocuments({ product_id })
     ])
 
@@ -68,6 +73,7 @@ const reviewService = {
       Review.find(filter)
         .populate('user_id', 'username email')
         .populate('product_id', 'name slug')
+        .populate('admin_reply.user_id', 'username role')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(pageSize),
@@ -89,7 +95,12 @@ const reviewService = {
     const skip = (page - 1) * limit
 
     const [reviews, total] = await Promise.all([
-      Review.find({ user_id }).populate('product_id', 'name slug').sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Review.find({ user_id })
+        .populate('product_id', 'name slug')
+        .populate('admin_reply.user_id', 'username role')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
       Review.countDocuments({ user_id })
     ])
 
@@ -136,6 +147,32 @@ const reviewService = {
     }
 
     return { message: 'Đã xóa review thành công' }
+  },
+
+  replyReviewByAdmin: async ({ review_id, user_id, role, content }) => {
+    const review = await Review.findById(review_id)
+
+    if (!review) {
+      throw new Error('Không tìm thấy review')
+    }
+
+    const now = new Date()
+    const previousCreatedAt = review.admin_reply?.createdAt
+
+    review.admin_reply = {
+      content: content.trim(),
+      user_id,
+      role,
+      createdAt: previousCreatedAt || now,
+      updatedAt: now
+    }
+
+    await review.save()
+
+    return await Review.findById(review_id)
+      .populate('user_id', 'username email')
+      .populate('product_id', 'name slug')
+      .populate('admin_reply.user_id', 'username role')
   }
 }
 

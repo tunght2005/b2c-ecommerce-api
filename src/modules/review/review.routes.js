@@ -17,5 +17,6 @@ router.post('/', authMiddleware, requireRole('customer'), reviewController.creat
 router.put('/:id', authMiddleware, requireRole('customer'), reviewController.updateReview)
 router.delete('/:id', authMiddleware, requireRole('customer'), reviewController.deleteReview)
 router.delete('/admin/:id', authMiddleware, requireRole('admin', 'support'), reviewController.deleteReviewByAdmin)
+router.put('/admin/:id/reply', authMiddleware, requireRole('admin', 'support'), reviewController.replyReviewByAdmin)
 
 module.exports = router

@@ -25,6 +25,26 @@ const reviewSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true
+    },
+    admin_reply: {
+      content: {
+        type: String,
+        trim: true
+      },
+      user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      },
+      role: {
+        type: String,
+        enum: ['admin', 'support']
+      },
+      createdAt: {
+        type: Date
+      },
+      updatedAt: {
+        type: Date
+      }
     }
   },
   { timestamps: true }
